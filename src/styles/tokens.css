@@ -1,0 +1,112 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  Brand tokens. Hexes marked "Onpoint" were sampled from the Ascend case PDF;
+  swap them here if Onpoint shares official values. Each colour has a matching
+  "-rgb" triplet (same colour) so Tailwind can apply opacity. Change both.
+*/
+:root {
+  --ink: #01000d; /* Onpoint (case PDF) */
+  --ink-rgb: 1 0 13;
+  --brand: #4d1089; /* Onpoint (case PDF) */
+  --brand-rgb: 77 16 137;
+  --brand-orange: #f56f31; /* Onpoint (case PDF) */
+  --brand-orange-rgb: 245 111 49;
+  --brand-pink: #f23276; /* Onpoint (case PDF) */
+  --brand-pink-rgb: 242 50 118;
+  --peach: #fbd4c1; /* Onpoint (case PDF) */
+  --peach-rgb: 251 212 193;
+  --canvas: #f7f5fb; /* Onpoint (case PDF) */
+  --canvas-rgb: 247 245 251;
+  --unlock: #d7ff3a; /* Team addition: progress fill and "Unlocked" only */
+  --unlock-rgb: 215 255 58;
+  --muted: #8a8698; /* Team addition */
+  --muted-rgb: 138 134 152;
+  --teal: #0e8f83; /* Team addition: "Public source" tag only */
+  --teal-rgb: 14 143 131;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--ink);
+  font-family: Inter, system-ui, sans-serif;
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+}
+
+body.hide-cursor,
+body.hide-cursor * {
+  cursor: none !important;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+input[type='range'] {
+  accent-color: var(--brand);
+}
+
+@layer components {
+  .card {
+    @apply rounded-card border border-ink/[0.08] bg-white;
+  }
+  .sticker {
+    @apply inline-flex items-center rounded-lg px-2 py-1 font-display text-xs font-extrabold uppercase tracking-wide;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-brand px-5 py-3 text-sm font-semibold text-white transition-opacity active:opacity-80 disabled:opacity-40;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-ink/[0.12] bg-white px-5 py-3 text-sm font-semibold text-ink active:opacity-80;
+  }
+  .label {
+    @apply text-[11px] font-semibold uppercase tracking-wider text-muted;
+  }
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+.stripes {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgb(var(--unlock-rgb) / 0.9) 0 4px,
+    rgb(var(--unlock-rgb) / 0.35) 4px 8px
+  );
+}
+
+@keyframes ripple {
+  from {
+    transform: translate(-50%, -50%) scale(0.3);
+    opacity: 0.9;
+  }
+  to {
+    transform: translate(-50%, -50%) scale(1.6);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+  }
+}
