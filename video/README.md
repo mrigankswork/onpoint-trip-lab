@@ -20,9 +20,13 @@ npm run studio             # preview and scrub
 
 ## Sound
 
-- `public/sfx/*.wav` are simple synthesized effects (tap, whoosh, chime, pop).
-- Music is not included. Put a royalty-free track at `public/music.mp3` and render again; it plays at 0.6 and fades out on the end card.
-- A voiceover at `public/voiceover.mp3` is picked up the same way, and ducks the music to 0.25.
+All three layers are generated locally, so there is nothing to license.
+
+- **Music:** `python3 audio/music.py` synthesizes `public/music.mp3`, an original 120 BPM bed. At 120 BPM every storyboard scene change lands on a beat. To use another track, replace the file.
+- **Voiceover:** `node audio/voiceover.mjs` speaks the lines with the macOS system voice Samantha and writes `public/voiceover.mp3`. Edit the lines, voice or rate at the top of that file. If timings change, update `VO` in `src/constants.ts` so the music ducks in the right places.
+- **Effects:** `public/sfx/*.wav` (tap, whoosh, chime, pop).
+
+`npm run render` uses the music and voiceover when the files exist. Music plays at 0.6 and ducks to 0.25 under each spoken line.
 
 ## Where things are
 

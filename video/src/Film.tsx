@@ -1,6 +1,6 @@
 import React from 'react';
 import { AbsoluteFill, Audio, Easing, Freeze, Img, OffthreadVideo, Sequence, interpolate, staticFile, useCurrentFrame } from 'remotion';
-import { C, FPS, N, S, SCREEN, T } from './constants';
+import { C, FPS, N, S, SCREEN, T, VO } from './constants';
 import { EndCard } from './EndCard';
 import { AvatarBubble, Background, Callout, Confetti, MonthChip, Pill, Sticker, Title, kf, useStage, window01 } from './kit';
 import { Phone3D } from './Phone';
@@ -210,25 +210,34 @@ export const Film: React.FC<FilmProps> = ({ music, voiceover, sfx }) => {
       </Sequence>
 
       {/* Sound */}
-      {music && <Audio src={staticFile('music.mp3')} volume={(t) => (voiceover ? 0.25 : 0.6) * interpolate(t, [0, 20, 1740, 1800], [0, 1, 1, 0], clamp)} />}
+      {music && (
+        <Audio
+          src={staticFile('music.mp3')}
+          volume={(t) => {
+            // 0.6 on its own; under a spoken line it ducks to 0.25, easing over a third of a second.
+            const speaking = voiceover ? Math.max(0, ...VO.map(([a, b]) => Math.min(interpolate(t, [a - 10, a], [0, 1], clamp), interpolate(t, [b, b + 12], [1, 0], clamp)))) : 0;
+            return interpolate(speaking, [0, 1], [0.6, 0.25]) * interpolate(t, [0, 20, 1740, 1800], [0, 1, 1, 0], clamp);
+          }}
+        />
+      )}
       {voiceover && <Audio src={staticFile('voiceover.mp3')} />}
       {sfx && (
         <>
           {whooshes.map((w) => (
             <Sequence key={`w${w}`} from={w} layout="none">
-              <Audio src={staticFile('sfx/whoosh.wav')} volume={0.35} />
+              <Audio src={staticFile('sfx/whoosh.wav')} volume={0.7} />
             </Sequence>
           ))}
           {taps.map((t) => (
             <Sequence key={`t${t}`} from={t} layout="none">
-              <Audio src={staticFile('sfx/tap.wav')} volume={0.5} />
+              <Audio src={staticFile('sfx/tap.wav')} volume={0.9} />
             </Sequence>
           ))}
           <Sequence from={T.unlock} layout="none">
-            <Audio src={staticFile('sfx/chime.wav')} volume={0.6} />
+            <Audio src={staticFile('sfx/chime.wav')} volume={1} />
           </Sequence>
           <Sequence from={T.cardLift} layout="none">
-            <Audio src={staticFile('sfx/pop.wav')} volume={0.6} />
+            <Audio src={staticFile('sfx/pop.wav')} volume={1} />
           </Sequence>
         </>
       )}
