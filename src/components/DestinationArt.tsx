@@ -12,7 +12,7 @@ export function DestinationArt({ kind }: { kind: ArtKind }) {
     case 'mountain':
       return (
         <svg {...props}>
-          <circle cx="152" cy="34" r="13" fill="var(--peach)" opacity=".9" />
+          <circle cx="172" cy="56" r="11" fill="var(--peach)" opacity=".85" />
           <path d="M-10 120 52 46l34 46 36-54 88 82z" fill="#fff" opacity=".14" />
           <path d="M122 38l-10 15 7-3 4 6 5-7 7 3z" fill="#fff" opacity=".55" />
           <path d="M-10 120 40 84l34 24 54-36 82 48z" fill="#fff" opacity=".1" />

@@ -91,7 +91,7 @@ export default function Calculator() {
                 tickLine={false}
                 axisLine={false}
                 width={56}
-                domain={[0, (max: number) => Math.max(max, e.cost * 1.1)]}
+                domain={[0, (max: number) => Math.ceil(Math.max(max, e.cost * 1.1) / 2000) * 2000]}
               />
               <Tooltip
                 {...chartTooltip}

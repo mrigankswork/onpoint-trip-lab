@@ -22,7 +22,7 @@ export function ModeSwitch() {
             aria-selected={on}
             data-demo={`mode-${s.mode}`}
             onClick={() => flip(s.mode)}
-            className={`relative z-10 min-w-[92px] rounded-full px-4 py-1.5 text-[13px] font-semibold transition-colors ${on ? 'text-white' : 'text-muted'}`}
+            className={`relative z-10 min-w-[84px] whitespace-nowrap rounded-full px-3.5 py-1.5 text-[13px] font-semibold transition-colors ${on ? 'text-white' : 'text-muted'}`}
           >
             {on && (
               <motion.span

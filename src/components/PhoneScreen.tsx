@@ -62,7 +62,7 @@ export function PhoneScreen() {
   return (
     <div data-phone className="relative flex h-full w-full flex-col overflow-hidden bg-canvas text-ink">
       <header className="z-30 flex shrink-0 items-center justify-between gap-2 border-b border-ink/[0.06] bg-canvas px-3 pb-2 pt-[max(10px,env(safe-area-inset-top))]">
-        <span className="w-[68px] font-display text-[13px] font-extrabold leading-none text-brand">
+        <span className="w-[58px] font-display text-[13px] font-extrabold leading-none text-brand">
           Trip
           <br />
           Lab
@@ -70,8 +70,8 @@ export function PhoneScreen() {
         <ModeSwitch />
         <button
           onClick={() => setMonthSheet(true)}
-          aria-label="Change simulated month"
-          className="flex w-[68px] items-center justify-end gap-1 text-[12px] font-semibold text-ink"
+          aria-label={`M${fmtMonths(month)}: change simulated month`}
+          className="flex w-[58px] items-center justify-end gap-1 whitespace-nowrap text-[12px] font-semibold text-ink"
         >
           <Clock size={16} />M{fmtMonths(month)}
         </button>

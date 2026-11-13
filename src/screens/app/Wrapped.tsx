@@ -75,7 +75,9 @@ export default function Wrapped() {
           className="relative flex aspect-[9/16] w-full flex-col overflow-hidden rounded-[28px] p-5 text-white"
           style={{ background: 'linear-gradient(170deg, var(--brand) 0%, var(--ink) 70%)' }}
         >
-          <DestinationArt kind={e.dest.art} />
+          <div className="absolute inset-x-0 bottom-0 h-[42%]">
+            <DestinationArt kind={e.dest.art} />
+          </div>
           <div className="relative flex items-center gap-2 text-[12px] font-semibold text-white/80">
             <WingMark size={14} /> Trip Lab
           </div>
