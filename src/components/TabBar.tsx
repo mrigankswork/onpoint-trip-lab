@@ -24,7 +24,10 @@ export function TabBar() {
   const trip = mode === 'trip';
   const tabs = trip ? TRIP_TABS : TODAY_TABS;
   return (
-    <nav className="flex shrink-0 border-t border-ink/[0.08] bg-white px-2 pb-[max(8px,env(safe-area-inset-bottom))] pt-2">
+    <nav
+      className="flex shrink-0 border-t border-ink/[0.08] bg-white px-2 pt-2"
+      style={{ paddingBottom: 'max(8px, var(--safe-bottom, env(safe-area-inset-bottom, 0px)))' }}
+    >
       {tabs.map((t) => {
         const on = t.match.includes(pathname);
         const Icon = t.icon;

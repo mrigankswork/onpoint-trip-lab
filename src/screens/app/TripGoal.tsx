@@ -66,12 +66,12 @@ export default function TripGoal() {
           <Zap size={18} className="text-orange" /> Get there faster
         </p>
         <div className="mt-3 grid grid-cols-2 gap-2.5">
-          <div className="rounded-2xl bg-canvas p-3">
+          <div className="rounded-[14px] bg-canvas p-3">
             <p className="text-[12px] text-muted">Without Drops</p>
             <p className="font-display text-2xl font-bold text-muted">{fmtMonths(e.trip.monthsTripNoDrops)}</p>
             <p className="text-[12px] text-muted">months to the whole trip</p>
           </div>
-          <div className="rounded-2xl bg-orange/10 p-3">
+          <div className="rounded-[14px] bg-orange/10 p-3">
             <p className="text-[12px] font-semibold text-orange">With live Drops</p>
             <p className="font-display text-2xl font-bold">{fmtMonths(e.trip.monthsTrip)}</p>
             <p className="text-[12px] text-muted">months to the whole trip</p>

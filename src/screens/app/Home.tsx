@@ -90,7 +90,7 @@ export default function Home() {
           </div>
           <div className="mt-3 grid grid-cols-2 gap-2">
             {PARTS.map((p) => (
-              <button key={p.letter} onClick={() => navigate(p.to)} className="flex items-center gap-2.5 rounded-2xl bg-canvas p-2.5 text-left">
+              <button key={p.letter} onClick={() => navigate(p.to)} className="flex items-center gap-2.5 rounded-[14px] bg-canvas p-2.5 text-left">
                 <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand font-display text-[15px] font-extrabold text-white">
                   {p.letter}
                 </span>
@@ -102,7 +102,7 @@ export default function Home() {
             ))}
           </div>
           <button onClick={() => setMonth(jump)} className="btn-ghost mt-3 w-full !py-2.5 !text-[13px]">
-            <FastForward size={15} /> Fast-forward {jump} months to the first unlock
+            <FastForward size={15} /> Skip ahead {jump} months to the first unlock
           </button>
         </section>
       )}

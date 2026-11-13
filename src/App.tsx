@@ -1,5 +1,5 @@
 import { MotionConfig, motion } from 'framer-motion';
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { HashRouter } from 'react-router-dom';
 import { LabView, preloadLab } from './components/LabView';
 import { PhoneFrame } from './components/PhoneFrame';
@@ -11,7 +11,6 @@ import { DemoController } from './demo/DemoController';
 import { useLayout } from './hooks';
 import { IS_DEMO, useLab } from './store/useLab';
 
-const PHONE = { w: 390, h: 844 };
 const BACKDROP = 'radial-gradient(circle at 50% 42%, rgb(var(--brand-rgb) / 0.6), var(--ink) 72%)';
 // Views fade in on entry only. Nothing waits on an exit animation, so a switch can never stall.
 const fade = { initial: { opacity: 0 }, animate: { opacity: 1 }, transition: { duration: 0.2 } };
@@ -64,8 +63,8 @@ function Desktop() {
             <motion.div
               key="app"
               {...fade}
-              className="absolute inset-0 flex items-center justify-center px-4 pt-2"
-              style={{ background: BACKDROP, paddingBottom: IS_DEMO ? 104 : 24 }}
+              className="absolute inset-0 px-4 pt-1"
+              style={{ background: BACKDROP, paddingBottom: IS_DEMO ? 100 : 14 }}
             >
               <PhoneFrame>
                 <PhoneScreen />
@@ -88,33 +87,16 @@ function Desktop() {
 
 /** Landscape recording layout: phone and Lab side by side on a 16:9 canvas. */
 function SideBySide() {
-  const col = useRef<HTMLDivElement>(null);
-  const [scale, setScale] = useState(1);
-  useEffect(() => {
-    const el = col.current!;
-    const fit = () =>
-      setScale(Math.min(1, (el.clientHeight - 32 - (IS_DEMO ? 92 : 0)) / PHONE.h, (el.clientWidth - 32) / PHONE.w));
-    const ro = new ResizeObserver(fit);
-    ro.observe(el);
-    fit();
-    return () => ro.disconnect();
-  }, []);
   return (
     <div className="flex h-full w-full">
-      <div
-        ref={col}
-        className="flex h-full w-[42%] shrink-0 flex-col items-center justify-center gap-4 overflow-hidden"
-        style={{ background: BACKDROP }}
-      >
-        <div style={{ width: PHONE.w * scale, height: PHONE.h * scale }}>
-          <div style={{ width: PHONE.w, height: PHONE.h, transform: `scale(${scale})`, transformOrigin: '0 0' }}>
-            <PhoneFrame>
-              <PhoneScreen />
-            </PhoneFrame>
-          </div>
+      <div className="flex h-full w-[40%] shrink-0 flex-col items-center gap-3 overflow-hidden p-3" style={{ background: BACKDROP }}>
+        <div className="min-h-0 w-full flex-1">
+          <PhoneFrame>
+            <PhoneScreen />
+          </PhoneFrame>
         </div>
         {IS_DEMO && (
-          <div className="w-[88%]">
+          <div className="w-[92%] shrink-0">
             <CaptionOverlay variant="bar" />
           </div>
         )}

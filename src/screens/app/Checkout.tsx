@@ -46,7 +46,7 @@ export default function Checkout() {
       <p className="text-[13px] text-muted">
         Shop as usual on {brand.name}. We track the order and bring the points back to your trip.
       </p>
-      <div className="mt-4 flex items-center justify-between rounded-2xl bg-canvas p-3">
+      <div className="mt-4 flex items-center justify-between rounded-[14px] bg-canvas p-3">
         <button aria-label="Decrease amount" onClick={() => setAmount(Math.max(STEP, amount - STEP))} className="rounded-full bg-white p-3">
           <Minus size={16} />
         </button>

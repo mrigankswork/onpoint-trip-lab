@@ -35,7 +35,8 @@ export function Sheet({
           <motion.div
             role="dialog"
             aria-label={title}
-            className="relative w-full rounded-t-[28px] bg-white p-5 pb-7"
+            className="relative w-full rounded-t-[28px] bg-white p-5"
+            style={{ paddingBottom: 'calc(max(8px, var(--safe-bottom, env(safe-area-inset-bottom, 0px))) + 16px)' }}
             initial={{ y: '100%' }}
             animate={{ y: 0 }}
             exit={{ y: '100%' }}

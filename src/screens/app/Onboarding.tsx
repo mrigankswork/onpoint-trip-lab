@@ -244,7 +244,10 @@ export default function Onboarding() {
         </AnimatePresence>
       </div>
 
-      <div className="shrink-0 border-t border-ink/[0.06] bg-canvas px-4 pt-3">
+      <div
+        className="shrink-0 border-t border-ink/[0.06] bg-canvas px-4 pt-3"
+        style={{ paddingBottom: 'max(8px, var(--safe-bottom, env(safe-area-inset-bottom, 0px)))' }}
+      >
         <button
           data-demo={step === LAST ? 'onb-start' : 'onb-next'}
           onClick={() => (step === LAST ? start() : setStep(step + 1))}
@@ -257,7 +260,7 @@ export default function Onboarding() {
             See the app as it is today first
           </button>
         )}
-        <Disclaimer className="!px-0 !pb-[max(10px,env(safe-area-inset-bottom))] !pt-2" />
+        <Disclaimer className="!px-0 !pb-1 !pt-2" />
       </div>
     </div>
   );

@@ -4,7 +4,7 @@
 
 A clickable prototype of the Onpoint app with one switch: **Today / With TRIP**. It shows the same user, Riya, going from a trip that is about 17 months away to a first unlock in about 3 months. It is a static web app with two views and a switch between them:
 
-- **The app**: what Riya sees. Full-screen on a phone; inside a phone frame on its background on desktop. It opens with onboarding (welcome, pick the trip, who's coming, your plan) and then drops into the main app, with a short guide to its four parts.
+- **The app**: what Riya sees. Full-screen on a phone; inside an iPhone 18 Pro-sized frame (402 × 874 points) on its background on desktop. It opens with onboarding (welcome, pick the trip, who's coming, your plan) and then drops into the main app, with a short guide to its four parts.
 - **Trip Lab**: why it works. What each screen proves, plus the Calculator, Growth model and Assumptions behind every number.
 
 On desktop the switch is in the top bar. On a phone, tap **Lab** at the top left of the app, and **Back to the app** in the Lab.

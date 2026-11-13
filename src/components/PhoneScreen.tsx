@@ -64,31 +64,36 @@ export function PhoneScreen({ labButton = false }: { labButton?: boolean }) {
 
   return (
     <div data-phone className="relative flex h-full w-full flex-col overflow-hidden bg-canvas text-ink">
-      <header className="z-30 flex shrink-0 items-center justify-between gap-2 border-b border-ink/[0.06] bg-canvas px-3 pb-2 pt-[max(10px,env(safe-area-inset-top))]">
-        {labButton ? (
-          <button
-            data-demo="open-lab"
-            onClick={() => setView('lab')}
-            aria-label="Open the Trip Lab"
-            className="flex w-[58px] items-center gap-1 whitespace-nowrap rounded-full bg-brand/10 px-2 py-1.5 text-[12px] font-bold text-brand"
-          >
-            <WingMark size={12} /> Lab
-          </button>
-        ) : (
-          <span className="w-[58px] font-display text-[13px] font-extrabold leading-none text-brand">
-            Trip
-            <br />
-            Lab
-          </span>
-        )}
+      <header
+        className="z-30 grid shrink-0 grid-cols-[1fr_auto_1fr] items-center gap-2 border-b border-ink/[0.06] bg-canvas px-4 pb-2.5"
+        style={{ paddingTop: 'max(10px, calc(var(--safe-top, env(safe-area-inset-top, 0px)) + 4px))' }}
+      >
+        <div className="flex justify-start">
+          {labButton ? (
+            <button
+              data-demo="open-lab"
+              onClick={() => setView('lab')}
+              aria-label="Open the Trip Lab"
+              className="flex items-center gap-1 whitespace-nowrap rounded-full bg-brand/10 px-2.5 py-1.5 text-[12px] font-bold text-brand"
+            >
+              <WingMark size={12} /> Lab
+            </button>
+          ) : (
+            <span className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-brand text-white" aria-label="Onpoint Trip Lab">
+              <WingMark size={15} />
+            </span>
+          )}
+        </div>
         <ModeSwitch />
-        <button
-          onClick={() => setMonthSheet(true)}
-          aria-label={`M${fmtMonths(month)}: change simulated month`}
-          className="flex w-[58px] items-center justify-end gap-1 whitespace-nowrap text-[12px] font-semibold text-ink"
-        >
-          <Clock size={16} />M{fmtMonths(month)}
-        </button>
+        <div className="flex justify-end">
+          <button
+            onClick={() => setMonthSheet(true)}
+            aria-label={`M${fmtMonths(month)}: change simulated month`}
+            className="flex items-center gap-1 whitespace-nowrap rounded-full bg-white px-2.5 py-1.5 text-[12px] font-semibold text-ink ring-1 ring-ink/[0.08]"
+          >
+            <Clock size={14} />M{fmtMonths(month)}
+          </button>
+        </div>
       </header>
 
       <OverlayContext.Provider value={overlay}>
