@@ -5,3 +5,4 @@ dist
 *.local
 video/out
 captures
+.env*
