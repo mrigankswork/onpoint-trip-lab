@@ -36,7 +36,7 @@ export default function Growth() {
         <Kpi label="Payback" value={fmtMonths(paybackMonths(e.v))} sub="months" highlightKey="kpi-payback" />
       </div>
 
-      <div className="grid gap-4 2xl:grid-cols-2">
+      <div className="grid gap-4 lg:grid-cols-2">
         <section className="card p-4">
           <div className="mb-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-[12px]">
             <span className="font-semibold">Active earners by month</span>
@@ -95,7 +95,7 @@ export default function Growth() {
 
       <section className="card p-4">
         <p className="label mb-1">Inputs</p>
-        <div className="grid gap-x-8 md:grid-cols-2">
+        <div className="grid gap-x-8 md:grid-cols-2 xl:grid-cols-3">
           {INPUTS.map((k) => (
             <AssumptionInput key={k} k={k} />
           ))}

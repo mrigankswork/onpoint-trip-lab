@@ -3,7 +3,7 @@ import { create } from 'zustand';
 import { DEFAULT_DROPS, brandById } from '../data/brands';
 import { destinationById, PIECE_LABEL } from '../data/destinations';
 import { defaultSquad, type SquadMember } from '../data/squad';
-import { ASSUMPTIONS, DEFAULTS, type AssumptionKey, type DestinationId, type Values } from '../engine/assumptions';
+import { ASSUMPTIONS, DEFAULTS, TRIP_PIECES, type AssumptionKey, type DestinationId, type Values } from '../engine/assumptions';
 import * as calc from '../engine/calc';
 import type { Mode } from '../engine/calc';
 
@@ -35,25 +35,28 @@ const params = new URLSearchParams(
 export const IS_DEMO = params.get('demo') === '1';
 export const LAYOUT_PARAM = params.get('layout') as 'portrait' | 'landscape' | null;
 
-const loadSaved = (): { mode?: Mode; month?: number } => {
+interface Saved {
+  mode?: Mode;
+  month?: number;
+  onboarded?: boolean;
+  destinationId?: DestinationId;
+  tripType?: 'solo' | 'squad';
+}
+
+// Remembers where the visitor left off: mode, month and the trip they set up.
+const loadSaved = (): Saved => {
   if (IS_DEMO) return {};
   try {
     const raw = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '{}');
     return {
       mode: raw.mode === 'trip' || raw.mode === 'today' ? raw.mode : undefined,
       month: typeof raw.month === 'number' && raw.month >= 0 && raw.month <= 12 ? raw.month : undefined,
+      onboarded: raw.onboarded === true ? true : undefined,
+      destinationId: raw.destinationId in TRIP_PIECES ? raw.destinationId : undefined,
+      tripType: raw.tripType === 'solo' || raw.tripType === 'squad' ? raw.tripType : undefined,
     };
   } catch {
     return {};
-  }
-};
-
-const save = (mode: Mode, month: number) => {
-  if (IS_DEMO) return;
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ mode, month }));
-  } catch {
-    /* storage unavailable: fine */
   }
 };
 
@@ -75,6 +78,10 @@ export interface LabState {
   highlight: string | null;
   toast: { id: number; text: string } | null;
   monthSheet: boolean;
+  /** Top-level view: the app on its background, or the Trip Lab. */
+  view: 'app' | 'lab';
+  /** The "here's what's where" guide shown on Home right after onboarding. */
+  tourOpen: boolean;
   /** Brand whose checkout sheet is open. */
   checkoutBrandId: string | null;
   /** Points currently flying from a brand tile into the goal bar. */
@@ -98,6 +105,8 @@ export interface LabState {
   showToast: (text: string) => void;
   clearToast: () => void;
   setMonthSheet: (open: boolean) => void;
+  setView: (view: 'app' | 'lab') => void;
+  setTour: (open: boolean) => void;
   openCheckout: (brandId: string | null) => void;
   setFly: (fly: LabState['fly']) => void;
   setLastNav: (n: 'nav' | 'flip') => void;
@@ -112,13 +121,13 @@ let toastId = 0;
 let orderId = 0;
 
 export const useLab = create<LabState>((set, get) => ({
-  mode: saved.mode ?? 'today',
-  month: saved.month ?? 3,
-  destinationId: 'kasol',
-  tripType: 'squad',
-  onboarded: true,
+  mode: saved.mode ?? 'trip',
+  month: saved.month ?? 0,
+  destinationId: saved.destinationId ?? 'kasol',
+  tripType: saved.tripType ?? 'squad',
+  onboarded: saved.onboarded ?? false,
   onboardingStep: 0,
-  welcomeLanded: true,
+  welcomeLanded: saved.onboarded ?? false,
   squad: defaultSquad(true),
   activeDrops: DEFAULT_DROPS,
   trackedOrders: seedOrders(),
@@ -129,24 +138,32 @@ export const useLab = create<LabState>((set, get) => ({
   highlight: null,
   toast: null,
   monthSheet: false,
+  view: 'app',
+  tourOpen: false,
   checkoutBrandId: null,
   fly: null,
   lastNav: 'nav',
 
   setMode: (mode) => {
-    if (get().mode === mode) return;
-    set({ mode });
-    save(mode, get().month);
+    if (get().mode !== mode) set({ mode });
   },
-  setMonth: (month) => {
-    const m = Math.max(0, Math.min(12, month));
-    set({ month: m });
-    save(get().mode, m);
+  setMonth: (month) => set({ month: Math.max(0, Math.min(12, month)) }),
+  setView: (view) => {
+    if (get().view !== view) set({ view });
   },
+  setTour: (tourOpen) => set({ tourOpen }),
   setDestination: (destinationId) => set({ destinationId }),
   setTripType: (tripType) => set({ tripType }),
   setOnboardingStep: (onboardingStep) => set({ onboardingStep }),
-  finishOnboarding: () => set({ onboarded: true, welcomeLanded: true, onboardingStep: 0 }),
+  finishOnboarding: () =>
+    set({
+      onboarded: true,
+      welcomeLanded: true,
+      onboardingStep: 0,
+      tourOpen: !IS_DEMO,
+      // Outside the scripted demo the whole gang is in, so every figure matches the deck.
+      squad: IS_DEMO ? get().squad : defaultSquad(true),
+    }),
   joinFriend: (id) => set({ squad: get().squad.map((m) => (m.id === id ? { ...m, joined: true } : m)) }),
   addOrder: (brandId, amount) => {
     const order: Order = {
@@ -194,17 +211,42 @@ export const useLab = create<LabState>((set, get) => ({
       highlight: null,
       toast: null,
       monthSheet: false,
+      tourOpen: false,
       checkoutBrandId: null,
       fly: null,
     });
   },
 }));
 
+if (!IS_DEMO) {
+  useLab.subscribe((s, p) => {
+    if (
+      s.mode === p.mode &&
+      s.month === p.month &&
+      s.onboarded === p.onboarded &&
+      s.destinationId === p.destinationId &&
+      s.tripType === p.tripType
+    )
+      return;
+    try {
+      const { mode, month, onboarded, destinationId, tripType } = s;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ mode, month, onboarded, destinationId, tripType }));
+    } catch {
+      /* storage unavailable: fine */
+    }
+  });
+}
+
 // ---- Derived numbers: every figure on screen comes through here -------------
 
 export const valuesOf = (overrides: Partial<Values>): Values => ({ ...DEFAULTS, ...overrides });
 
-export function derive(s: LabState) {
+type EngineInput = Pick<
+  LabState,
+  'month' | 'destinationId' | 'tripType' | 'squad' | 'welcomeLanded' | 'assumptionOverrides'
+>;
+
+export function derive(s: EngineInput) {
   const v = valuesOf(s.assumptionOverrides);
   const dest = destinationById(s.destinationId);
   const cost = calc.tripCost(dest.pieces);
@@ -275,10 +317,15 @@ export function derive(s: LabState) {
 export type Derived = ReturnType<typeof derive>;
 
 export function useEngine(): Derived {
-  const s = useLab();
+  // Subscribe only to what the maths reads, so toasts, sheets and highlights don't re-render screens.
+  const month = useLab((s) => s.month);
+  const destinationId = useLab((s) => s.destinationId);
+  const tripType = useLab((s) => s.tripType);
+  const squad = useLab((s) => s.squad);
+  const welcomeLanded = useLab((s) => s.welcomeLanded);
+  const assumptionOverrides = useLab((s) => s.assumptionOverrides);
   return useMemo(
-    () => derive(s),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [s.month, s.destinationId, s.tripType, s.squad, s.welcomeLanded, s.assumptionOverrides],
+    () => derive({ month, destinationId, tripType, squad, welcomeLanded, assumptionOverrides }),
+    [month, destinationId, tripType, squad, welcomeLanded, assumptionOverrides],
   );
 }

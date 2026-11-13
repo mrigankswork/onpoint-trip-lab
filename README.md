@@ -2,7 +2,12 @@
 
 *Concept prototype for the Ascend 3.0 case competition. Not affiliated with or endorsed by Onpoints Rewards Pvt Ltd. All user data is fictional.*
 
-A clickable prototype of the Onpoint app with one switch: **Today / With TRIP**. It shows the same user, Riya, going from a trip that is about 17 months away to a first unlock in about 3 months. It is a static web app: full-screen on a phone, and a phone frame with a side panel on desktop.
+A clickable prototype of the Onpoint app with one switch: **Today / With TRIP**. It shows the same user, Riya, going from a trip that is about 17 months away to a first unlock in about 3 months. It is a static web app with two views and a switch between them:
+
+- **The app**: what Riya sees. Full-screen on a phone; inside a phone frame on its background on desktop. It opens with onboarding (welcome, pick the trip, who's coming, your plan) and then drops into the main app, with a short guide to its four parts.
+- **Trip Lab**: why it works. What each screen proves, plus the Calculator, Growth model and Assumptions behind every number.
+
+On desktop the switch is in the top bar. On a phone, tap **Lab** at the top left of the app, and **Back to the app** in the Lab.
 
 ## Run it locally
 
@@ -24,8 +29,8 @@ src/
                  format.ts (display rounding only), calc.test.ts
   data/          persona, brands, destinations, squad, demoScript
   store/         useLab.ts (Zustand store + derive(), the one place screens get numbers from)
-  components/    PhoneFrame, PhoneScreen, ModeSwitch, MonthSlider, ProgressBar, RouteLine,
-                 DropCard, TrackingTimeline, SquadStrip, Sheet, Toast, SourceTag, Disclaimer
+  components/    PhoneFrame, PhoneScreen, LabView, ViewSwitch, ModeSwitch, MonthSlider, ProgressBar,
+                 RouteLine, DropCard, TrackingTimeline, SquadStrip, Sheet, Toast, SourceTag, Disclaimer
   screens/app/   TodayHome, TodayRedeem, Onboarding, Home, TripGoal, Shop, Checkout,
                  Tracking, Squad, Unlock, Wrapped, Profile
   screens/team/  Story, Calculator, Growth, Assumptions
@@ -53,7 +58,8 @@ src/
 
 ## Modelling choices worth knowing
 
-- **Bonuses land when they happen.** The live balance counts the welcome bonus and each referral only once it has landed in the story. Forecasts (3.3 and 7.5 months) always assume the full squad. Outside demo mode the app starts with everyone joined, so the deck numbers show.
+- **Bonuses land when they happen.** The live balance counts the welcome bonus and each referral only once it has landed in the story. Forecasts (3.3 and 7.5 months) always assume the full squad. Outside demo mode the whole squad counts as joined once onboarding is done, so the deck numbers show; in demo mode Aarav joins on screen in step 9.
+- **What the browser remembers.** Mode, month, the chosen trip and whether onboarding is done, in `localStorage`, so a refresh does not restart onboarding. "Start over from onboarding" in Profile resets it. Demo mode never reads or writes it.
 - **Simulated orders are "pending".** A checkout adds a striped pending segment to the goal bar. It never changes the confirmed balance, which always equals `balance(month)` from the engine.
 - **"Pending: 180 Onpoints" in Today mode** is derived: 75% of a month's earn (`pendingShare`, a Team assumption).
 - **Squad rank** is computed from illustrative "Drops caught" counts in `src/data/squad.ts`, not from the earn maths. Every squad member earns like Riya, so pooling does not make points faster.
@@ -78,10 +84,10 @@ There are no environment variables, API calls or analytics. Routing uses the URL
 
 | URL | What it does |
 | --- | --- |
-| `/` | Normal use. Phone layout under 900px wide, phone + side panel above. |
-| `/#/team` | Team view on mobile (Calculator, Growth, Assumptions). |
+| `/` | Normal use. Opens on onboarding the first time, then on the app's Home. |
+| `/#/team` | Opens the Trip Lab on the Calculator. |
 | `/?demo=1` | Demo mode: scripted walkthrough, about 106 seconds. |
-| `/?layout=landscape` | Phone + panel on a 16:9 canvas (fills a 1920 × 1080 window). |
+| `/?layout=landscape` | Phone and Trip Lab side by side on a 16:9 canvas (fills a 1920 × 1080 window). Recording only. |
 | `/?layout=portrait` | Phone alone on a 9:16 canvas (fills a 1080 × 1920 window). |
 
 Put `?demo=1` and `?layout=` before the `#`.
@@ -120,7 +126,7 @@ To change the script, edit `src/data/demoScript.ts`. Each step has a caption, a 
 - [x] Month slider updates every screen and both side-panel charts.
 - [x] Every assumption shows its tag in Team view.
 - [x] Demo mode runs steps 1–12 with no manual input in about 106 seconds.
-- [x] Works at 360px wide and in a 1440px desktop window.
+- [x] Works at 360px wide, in a short 1280 × 680 window and in a 1440px desktop window.
 - [x] No real brand logos, no photos of people, disclaimer on every screen and in Profile.
 - [x] Lighthouse mobile performance 90+ (96 on the local production build).
 - [ ] Mobile Safari and a real Android phone: not yet checked by hand. Checked in headless Chrome only.

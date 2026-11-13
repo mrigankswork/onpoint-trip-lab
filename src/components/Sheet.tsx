@@ -25,7 +25,7 @@ export function Sheet({
         <div className="pointer-events-auto absolute inset-0 flex items-end">
           <motion.button
             aria-label="Close"
-            className="absolute inset-0 bg-ink/50"
+            className="no-press absolute inset-0 bg-ink/50"
             onClick={onClose}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

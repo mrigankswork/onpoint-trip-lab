@@ -4,14 +4,14 @@ import { Screen } from '../../components/ui';
 import { brandById } from '../../data/brands';
 import { rupeeValue } from '../../engine/calc';
 import { fmtINR, fmtInt } from '../../engine/format';
-import { useNow } from '../../hooks';
+import { useOrderClock } from '../../hooks';
 import { orderStage, useEngine, useLab } from '../../store/useLab';
 import { StatusChip } from './Home';
 
 export default function Tracking() {
   const e = useEngine();
   const orders = useLab((s) => s.trackedOrders);
-  const now = useNow(250);
+  const now = useOrderClock();
   const [latest, ...rest] = orders;
   const brand = brandById(latest.brandId);
   const earn = e.earnFor(latest.brandId, latest.amount, latest.inDrop);

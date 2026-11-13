@@ -10,7 +10,7 @@ const LAST = demoScript.length - 1;
  * Plays the script in data/demoScript.ts.
  * Keys: → / ← step, Space play/pause, T flip, R reset, H captions, C cursor.
  */
-export function DemoController({ hasPanel }: { hasPanel: boolean }) {
+export function DemoController({ sideBySide }: { sideBySide: boolean }) {
   const navigate = useNavigate();
   const flip = useFlip();
   const step = useLab((s) => s.demoStep);
@@ -19,8 +19,8 @@ export function DemoController({ hasPanel }: { hasPanel: boolean }) {
   const [run, setRun] = useState(0);
   const [ripple, setRipple] = useState<{ x: number; y: number; key: number } | null>(null);
   const startedAt = useRef(0);
-  const live = useRef({ navigate, flip, hasPanel });
-  live.current = { navigate, flip, hasPanel };
+  const live = useRef({ navigate, flip, sideBySide });
+  live.current = { navigate, flip, sideBySide };
 
   // Enter a step: set its starting state, then schedule its taps.
   useEffect(() => {
@@ -30,7 +30,10 @@ export function DemoController({ hasPanel }: { hasPanel: boolean }) {
     const later = (fn: () => void, ms: number) => timers.push(window.setTimeout(fn, ms));
 
     const ctx: DemoCtx = {
-      go: (path) => live.current.navigate(path),
+      go: (path) => {
+        useLab.getState().setView('app');
+        live.current.navigate(path);
+      },
       tap: (id) => {
         let tries = 0;
         const attempt = () => {
@@ -61,7 +64,7 @@ export function DemoController({ hasPanel }: { hasPanel: boolean }) {
       },
       team: (tab) => {
         useLab.getState().setPanelTab(tab);
-        if (!live.current.hasPanel) live.current.navigate('/team');
+        if (!live.current.sideBySide) useLab.getState().setView('lab');
       },
     };
 

@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Clock } from 'lucide-react';
-import { Suspense, lazy, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { fmtMonths } from '../engine/format';
 import { TRIP_PATHS } from '../hooks';
@@ -24,7 +24,8 @@ import { OverlayContext, Sheet } from './Sheet';
 import { TabBar } from './TabBar';
 import { Toast } from './Toast';
 
-const TeamRoute = lazy(() => import('../screens/team/TeamRoute'));
+import TeamRoute from '../screens/team/TeamRoute';
+import { WingMark } from './ui';
 
 function Index() {
   const mode = useLab((s) => s.mode);
@@ -37,7 +38,8 @@ function Trip({ children }: { children: JSX.Element }) {
   return onboarded ? children : <Navigate to="/onboarding" replace />;
 }
 
-export function PhoneScreen() {
+/** The app itself. `labButton` adds a way into the Trip Lab where there is no top bar (phones). */
+export function PhoneScreen({ labButton = false }: { labButton?: boolean }) {
   const [overlay, setOverlay] = useState<HTMLElement | null>(null);
   const location = useLocation();
   const { pathname } = location;
@@ -47,6 +49,7 @@ export function PhoneScreen() {
   const setMode = useLab((s) => s.setMode);
   const monthSheet = useLab((s) => s.monthSheet);
   const setMonthSheet = useLab((s) => s.setMonthSheet);
+  const setView = useLab((s) => s.setView);
 
   // The route decides the mode, so deep links and tab taps stay consistent with the switch.
   useEffect(() => {
@@ -62,11 +65,22 @@ export function PhoneScreen() {
   return (
     <div data-phone className="relative flex h-full w-full flex-col overflow-hidden bg-canvas text-ink">
       <header className="z-30 flex shrink-0 items-center justify-between gap-2 border-b border-ink/[0.06] bg-canvas px-3 pb-2 pt-[max(10px,env(safe-area-inset-top))]">
-        <span className="w-[58px] font-display text-[13px] font-extrabold leading-none text-brand">
-          Trip
-          <br />
-          Lab
-        </span>
+        {labButton ? (
+          <button
+            data-demo="open-lab"
+            onClick={() => setView('lab')}
+            aria-label="Open the Trip Lab"
+            className="flex w-[58px] items-center gap-1 whitespace-nowrap rounded-full bg-brand/10 px-2 py-1.5 text-[12px] font-bold text-brand"
+          >
+            <WingMark size={12} /> Lab
+          </button>
+        ) : (
+          <span className="w-[58px] font-display text-[13px] font-extrabold leading-none text-brand">
+            Trip
+            <br />
+            Lab
+          </span>
+        )}
         <ModeSwitch />
         <button
           onClick={() => setMonthSheet(true)}
@@ -82,12 +96,12 @@ export function PhoneScreen() {
           <motion.div
             key={pathname}
             className="absolute inset-0"
-            initial={flip ? { opacity: 0 } : { opacity: 0, x: 28 }}
+            initial={flip ? { opacity: 0 } : { opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: flip ? 0.3 : 0.25, ease: 'easeOut' }}
+            transition={{ duration: flip ? 0.3 : 0.22, ease: [0.2, 0.8, 0.2, 1] }}
+            style={{ willChange: 'transform, opacity' }}
           >
-            <Suspense fallback={null}>
-              <Routes location={location}>
+            <Routes location={location}>
                 <Route path="/" element={<Index />} />
                 <Route path="/today" element={<TodayHome />} />
                 <Route path="/today/redeem" element={<TodayRedeem />} />
@@ -102,8 +116,7 @@ export function PhoneScreen() {
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/team" element={<TeamRoute />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
-              </Routes>
-            </Suspense>
+            </Routes>
           </motion.div>
         </div>
         {showTabs && <TabBar />}

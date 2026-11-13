@@ -62,6 +62,7 @@ export default function Calculator() {
         <Kpi label="Whole trip · With TRIP" value={fmtMonths(e.trip.monthsTrip)} sub="months" tone="brand" highlightKey="kpi-trip-trip" />
       </div>
 
+      <div className="grid items-start gap-4 xl:grid-cols-[minmax(0,1fr)_360px]">
       <section className="card p-4">
         <div className="mb-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-[12px]">
           <span className="font-semibold">Cumulative balance by month (₹)</span>
@@ -72,7 +73,7 @@ export default function Calculator() {
             <i className="inline-block h-[3px] w-4 rounded bg-brand" /> With TRIP
           </span>
         </div>
-        <div className="h-[260px]">
+        <div className="h-[260px] xl:h-[380px]">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={data} margin={{ top: 16, right: 16, bottom: 4, left: 0 }}>
               <CartesianGrid stroke="rgb(var(--ink-rgb) / 0.06)" vertical={false} />
@@ -117,7 +118,7 @@ export default function Calculator() {
 
       <section className="card p-4">
         <p className="label mb-1">Inputs</p>
-        <div className="grid gap-x-8 md:grid-cols-2">
+        <div className="grid gap-x-8 md:grid-cols-2 xl:grid-cols-1">
           {INPUTS.map((k) => (
             <AssumptionInput key={k} k={k} />
           ))}
@@ -143,6 +144,7 @@ export default function Calculator() {
           </div>
         </div>
       </section>
+      </div>
     </div>
   );
 }

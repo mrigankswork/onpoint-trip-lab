@@ -53,6 +53,20 @@ body.hide-cursor * {
 button {
   font: inherit;
   color: inherit;
+  touch-action: manipulation;
+  transition: transform 110ms ease-out, opacity 110ms ease-out;
+}
+
+/* Every tap answers straight away. */
+button:active:not(:disabled):not(.no-press) {
+  transform: scale(0.97);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  button:active:not(:disabled):not(.no-press) {
+    transform: none;
+    opacity: 0.8;
+  }
 }
 
 input[type='range'] {

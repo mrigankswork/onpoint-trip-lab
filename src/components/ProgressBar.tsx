@@ -26,11 +26,9 @@ export function ProgressBar({
       className="relative w-full overflow-hidden rounded-full"
       style={{ height, background: tone === 'dark' ? 'rgb(255 255 255 / 0.2)' : 'rgb(var(--ink-rgb) / 0.1)' }}
     >
-      <motion.div
+      <div
         className="absolute inset-y-0 left-0 rounded-full bg-unlock"
-        initial={false}
-        animate={{ width: `${percent}%` }}
-        transition={{ duration: 0.25, ease: 'easeOut' }}
+        style={{ width: `${percent}%`, transition: 'width 180ms ease-out' }}
       />
       {pend > 0 && (
         <motion.div

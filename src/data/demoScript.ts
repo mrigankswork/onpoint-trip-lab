@@ -5,13 +5,13 @@ import { defaultSquad } from './squad';
 import { derive, useLab, type PanelTab } from '../store/useLab';
 
 export interface DemoCtx {
-  /** Navigate the phone to a route. */
+  /** Show the app and navigate it to a route. */
   go: (path: string) => void;
   /** Show a tap ripple on the element with this data-demo id, then click it. */
   tap: (id: string) => void;
   /** Glide the month slider to a value over a duration. */
   glide: (toMonth: number, ms: number) => void;
-  /** Show a Team view tab (side panel on desktop, #/team on mobile). */
+  /** Show a Trip Lab tab (beside the phone in the landscape layout, otherwise the Lab view). */
   team: (tab: PanelTab) => void;
 }
 
@@ -36,7 +36,7 @@ const fresh = (month: number) => {
 /** After onboarding, keeping any order already placed in the story. */
 const onTrip = (month: number, aaravJoined: boolean) => {
   if (!lab().onboarded) lab().resetStory({ onboarded: true, aaravJoined });
-  useLab.setState({ squad: defaultSquad(aaravJoined), welcomeLanded: true, checkoutBrandId: null });
+  useLab.setState({ squad: defaultSquad(aaravJoined), welcomeLanded: true, checkoutBrandId: null, tourOpen: false });
   lab().setMode('trip');
   lab().setMonth(month);
   lab().setPanelTab('story');
@@ -108,11 +108,12 @@ export const demoScript: DemoStep[] = [
       go('/onboarding');
     },
     actions: [
-      { at: 1500, run: ({ tap }) => tap('dest-kasol') },
-      { at: 3400, run: ({ tap }) => tap('onb-next') },
-      { at: 5600, run: ({ tap }) => tap('onb-squad') },
-      { at: 7600, run: ({ tap }) => tap('onb-next') },
-      { at: 11200, run: ({ tap }) => tap('onb-start') },
+      { at: 1800, run: ({ tap }) => tap('onb-next') },
+      { at: 3600, run: ({ tap }) => tap('dest-kasol') },
+      { at: 5200, run: ({ tap }) => tap('onb-next') },
+      { at: 7000, run: ({ tap }) => tap('onb-squad') },
+      { at: 8600, run: ({ tap }) => tap('onb-next') },
+      { at: 11400, run: ({ tap }) => tap('onb-start') },
     ],
   },
   {

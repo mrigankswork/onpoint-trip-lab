@@ -1,4 +1,4 @@
-import { ChevronRight, LockOpen, Sparkles } from 'lucide-react';
+import { ChevronRight, FastForward, LockOpen, Sparkles, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { DestinationArt } from '../../components/DestinationArt';
 import { DropCard } from '../../components/DropCard';
@@ -8,7 +8,7 @@ import { Num, Screen } from '../../components/ui';
 import { brandById, brands } from '../../data/brands';
 import { tripPercent } from '../../engine/calc';
 import { fmtINR, fmtMonths, fmtTripPct } from '../../engine/format';
-import { useNow, usePendingPoints } from '../../hooks';
+import { useOrderClock, usePendingPoints } from '../../hooks';
 import { orderStage, STAGES, useEngine, useLab } from '../../store/useLab';
 
 export function StatusChip({ stage }: { stage: number }) {
@@ -20,14 +20,26 @@ export function StatusChip({ stage }: { stage: number }) {
   );
 }
 
+// The parts of the app, one per TRIP pillar.
+const PARTS = [
+  { letter: 'T', title: 'Trip goal', sub: 'Your route and three unlocks', to: '/goal' },
+  { letter: 'R', title: 'Reward Drops', sub: 'Shop brands that count double', to: '/shop' },
+  { letter: 'I', title: 'In it together', sub: 'Your squad and the shared pool', to: '/squad' },
+  { letter: 'P', title: 'Proof', sub: 'Watch an order get tracked', to: '/tracking' },
+];
+
 export default function Home() {
   const e = useEngine();
   const navigate = useNavigate();
   const activeDrops = useLab((s) => s.activeDrops);
   const orders = useLab((s) => s.trackedOrders);
   const pending = usePendingPoints();
-  const now = useNow(500);
+  const now = useOrderClock();
   const stayUnlocked = e.milestones[0].unlocked;
+  const tourOpen = useLab((s) => s.tourOpen);
+  const setTour = useLab((s) => s.setTour);
+  const setMonth = useLab((s) => s.setMonth);
+  const jump = Math.ceil(e.milestones[0].monthsAt);
 
   return (
     <Screen>
@@ -64,6 +76,36 @@ export default function Home() {
           </div>
         </div>
       </button>
+
+      {tourOpen && (
+        <section className="card p-4">
+          <div className="flex items-start justify-between">
+            <div>
+              <p className="font-display text-[18px] font-bold leading-tight">You're in. Here's what's where.</p>
+              <p className="text-[12px] text-muted">Four parts, one trip. Tap any to look around.</p>
+            </div>
+            <button aria-label="Dismiss guide" onClick={() => setTour(false)} className="rounded-full bg-canvas p-2">
+              <X size={14} />
+            </button>
+          </div>
+          <div className="mt-3 grid grid-cols-2 gap-2">
+            {PARTS.map((p) => (
+              <button key={p.letter} onClick={() => navigate(p.to)} className="flex items-center gap-2.5 rounded-2xl bg-canvas p-2.5 text-left">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand font-display text-[15px] font-extrabold text-white">
+                  {p.letter}
+                </span>
+                <span className="min-w-0">
+                  <span className="block text-[13px] font-semibold leading-tight">{p.title}</span>
+                  <span className="block text-[11px] leading-tight text-muted">{p.sub}</span>
+                </span>
+              </button>
+            ))}
+          </div>
+          <button onClick={() => setMonth(jump)} className="btn-ghost mt-3 w-full !py-2.5 !text-[13px]">
+            <FastForward size={15} /> Fast-forward {jump} months to the first unlock
+          </button>
+        </section>
+      )}
 
       {stayUnlocked && (
         <button onClick={() => navigate('/unlock')} className="flex w-full items-center justify-between rounded-card bg-unlock p-4 text-left">
