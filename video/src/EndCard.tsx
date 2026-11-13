@@ -69,6 +69,7 @@ export const EndCard: React.FC = () => {
       <div style={{ ...up(50), fontFamily: SANS, fontWeight: 500, fontSize: 24, opacity: up(50).opacity * 0.65, textAlign: 'center', maxWidth: W * 0.86 }}>
         {footer}
         <div style={{ marginTop: 10, fontSize: 19 }}>Not affiliated with or endorsed by Onpoints Rewards Pvt Ltd. All user data is fictional.</div>
+        <div style={{ marginTop: 6, fontSize: 19 }}>{END.music}</div>
       </div>
     </div>
   );

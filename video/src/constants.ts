@@ -29,6 +29,8 @@ export const END = {
   // Fill these in before the final export. Empty strings are left off the end card.
   team: '',
   link: '',
+  // Required credit for the music (CC BY 3.0).
+  music: 'Music: "Avec Soin" by Kevin MacLeod (incompetech.com), licensed under CC BY 3.0',
 };
 
 // The app screen, in points (iPhone 18 Pro), as captured.

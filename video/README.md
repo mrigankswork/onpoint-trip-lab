@@ -13,20 +13,18 @@ cp captures/*.mp4 video/public/clips/ && cp captures/wrapped_card.png video/publ
 
 # 2. Render (from ./video)
 npm install
-npm run render             # out/onpoint-demo.mp4
-npm run render:vertical    # out/onpoint-demo-vertical.mp4
+npm run render             # both cuts, with voice and music
 npm run studio             # preview and scrub
 ```
 
 ## Sound
 
-All three layers are generated locally, so there is nothing to license.
-
-- **Music:** `python3 audio/music.py` synthesizes `public/music.mp3`, an original 120 BPM bed. At 120 BPM every storyboard scene change lands on a beat. To use another track, replace the file.
-- **Voiceover:** `node audio/voiceover.mjs` speaks the lines with the macOS system voice Samantha and writes `public/voiceover.mp3`. Edit the lines, voice or rate at the top of that file. If timings change, update `VO` in `src/constants.ts` so the music ducks in the right places.
+- **Voice:** Kokoro TTS (open source, runs locally), voice `af_heart`. `npm run voice -- af_heart` writes `public/vo/01.wav` … `10.wav` and `src/voLines.json`, which the film reads to place each line and duck the music. Lines and start times are at the top of `audio/tts.py`. Setup: `python3.11 -m venv audio/.venv && audio/.venv/bin/pip install kokoro-onnx soundfile`, then download `kokoro-v1.0.onnx` and `voices-v1.0.bin` from the kokoro-onnx GitHub releases into `audio/models/`.
+- **Music:** `public/music.mp3` is "Avec Soin" by Kevin MacLeod (incompetech.com), licensed under CC BY 3.0. The credit is on the end card and must stay with the video wherever it is posted.
 - **Effects:** `public/sfx/*.wav` (tap, whoosh, chime, pop).
+- **Levels** are in `MIX` in `src/constants.ts`: music 0.35, ducking to 0.12 under a voice line over 8 frames, 1s fade in, 2s fade out, effects 0.25.
 
-`npm run render` uses the music and voiceover when the files exist. Music plays at 0.6 and ducks to 0.25 under each spoken line.
+`npm run render` writes `out/onpoint-demo-vo.mp4` and `out/onpoint-demo-vo-vertical.mp4` and normalises each mix with ffmpeg's loudnorm.
 
 ## Where things are
 
