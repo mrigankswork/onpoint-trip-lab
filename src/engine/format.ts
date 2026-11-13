@@ -1,6 +1,6 @@
 // Display rounding only. The engine never rounds.
 
-import { ASSUMPTIONS, type AssumptionKey } from './assumptions';
+import { ASSUMPTIONS, type Assumption, type AssumptionKey } from './assumptions';
 
 export const fmtInt = (n: number) => Math.round(n).toLocaleString('en-IN');
 
@@ -27,7 +27,7 @@ export const fmtPct = (fraction: number, digits = 0) => `${trim(fraction * 100, 
 export const fmtTripPct = (pct: number) => `${pct >= 100 ? 100 : Math.min(99, Math.round(pct))}%`;
 
 export const fmtAssumption = (key: AssumptionKey, value: number): string => {
-  const a = ASSUMPTIONS[key];
+  const a: Assumption = ASSUMPTIONS[key];
   if (a.display && value === a.value) return a.display;
   switch (a.unit) {
     case 'inr':
