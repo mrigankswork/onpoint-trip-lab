@@ -1,0 +1,115 @@
+{
+  "voice": "af_heart",
+  "lines": [
+    {
+      "n": 1,
+      "start": 0,
+      "length": 5.38,
+      "ends": 5.38,
+      "sceneEnds": 10,
+      "speed": 1.0,
+      "fits": true,
+      "scene": "Intro, then the app today",
+      "text": "Riya earns rewards on almost everything she buys. But her trip is seventeen months away."
+    },
+    {
+      "n": 2,
+      "start": 10,
+      "length": 1.75,
+      "ends": 11.75,
+      "sceneEnds": 14,
+      "speed": 1.0,
+      "fits": true,
+      "scene": "The flip",
+      "text": "Same spend. New Onpoint."
+    },
+    {
+      "n": 3,
+      "start": 14,
+      "length": 2.82,
+      "ends": 16.82,
+      "sceneEnds": 22,
+      "speed": 1.0,
+      "fits": true,
+      "scene": "Onboarding",
+      "text": "She picks the trip first: Kasol, with her friends."
+    },
+    {
+      "n": 4,
+      "start": 22,
+      "length": 5.23,
+      "ends": 27.23,
+      "sceneEnds": 29,
+      "speed": 1.0,
+      "fits": true,
+      "scene": "Home and Drops",
+      "text": "Now she sees progress in rupees. And Drops, funded by brands, double what she earns."
+    },
+    {
+      "n": 5,
+      "start": 29,
+      "length": 2.35,
+      "ends": 31.35,
+      "sceneEnds": 36,
+      "speed": 1.0,
+      "fits": true,
+      "scene": "Checkout",
+      "text": "One order, two hundred rupees closer."
+    },
+    {
+      "n": 6,
+      "start": 36,
+      "length": 2.11,
+      "ends": 38.11,
+      "sceneEnds": 41,
+      "speed": 1.0,
+      "fits": true,
+      "scene": "Tracking",
+      "text": "Tracked live, at one rupee a point."
+    },
+    {
+      "n": 7,
+      "start": 41,
+      "length": 2.71,
+      "ends": 43.71,
+      "sceneEnds": 47,
+      "speed": 1.0,
+      "fits": true,
+      "scene": "Squad",
+      "text": "Her friends join. The goal becomes the group's."
+    },
+    {
+      "n": 8,
+      "start": 47,
+      "length": 3.29,
+      "ends": 50.29,
+      "sceneEnds": 53,
+      "speed": 1.0,
+      "fits": true,
+      "scene": "Unlock",
+      "text": "Her stay unlocks in just over three months, not seventeen."
+    },
+    {
+      "n": 9,
+      "start": 53,
+      "length": 1.17,
+      "ends": 54.17,
+      "sceneEnds": 57,
+      "speed": 1.0,
+      "fits": true,
+      "scene": "Wrapped",
+      "text": "And it's worth sharing."
+    },
+    {
+      "n": 10,
+      "start": 57,
+      "length": 2.24,
+      "ends": 59.24,
+      "sceneEnds": 60,
+      "speed": 1.0,
+      "fits": true,
+      "scene": "End card",
+      "text": "Onpoint. Your next weekend starts here."
+    }
+  ]
+}

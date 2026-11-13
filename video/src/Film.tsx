@@ -1,6 +1,7 @@
 import React from 'react';
 import { AbsoluteFill, Audio, Easing, Freeze, Img, OffthreadVideo, Sequence, interpolate, staticFile, useCurrentFrame } from 'remotion';
-import { C, FPS, N, S, SCREEN, T, VO } from './constants';
+import { C, DURATION, FPS, MIX, N, S, SCREEN, T } from './constants';
+import vo from './voLines.json';
 import { EndCard } from './EndCard';
 import { AvatarBubble, Background, Callout, Confetti, MonthChip, Pill, Sticker, Title, kf, useStage, window01 } from './kit';
 import { Phone3D } from './Phone';
@@ -42,6 +43,9 @@ const Footage: React.FC = () => {
 };
 
 export type FilmProps = { music: boolean; voiceover: boolean; sfx: boolean };
+
+// Voice lines as [first frame, last frame], for ducking the music.
+const LINES: [number, number][] = vo.lines.map((l: { start: number; length: number }) => [Math.round(l.start * FPS), Math.round((l.start + l.length) * FPS)]);
 
 export const Film: React.FC<FilmProps> = ({ music, voiceover, sfx }) => {
   const f = useCurrentFrame();
@@ -213,31 +217,38 @@ export const Film: React.FC<FilmProps> = ({ music, voiceover, sfx }) => {
       {music && (
         <Audio
           src={staticFile('music.mp3')}
+          startFrom={Math.round(MIX.musicStart * FPS)}
           volume={(t) => {
-            // 0.6 on its own; under a spoken line it ducks to 0.25, easing over a third of a second.
-            const speaking = voiceover ? Math.max(0, ...VO.map(([a, b]) => Math.min(interpolate(t, [a - 10, a], [0, 1], clamp), interpolate(t, [b, b + 12], [1, 0], clamp)))) : 0;
-            return interpolate(speaking, [0, 1], [0.6, 0.25]) * interpolate(t, [0, 20, 1740, 1800], [0, 1, 1, 0], clamp);
+            const speaking = voiceover ? Math.max(0, ...LINES.map(([a, b]) => Math.min(interpolate(t, [a - MIX.duckFrames, a], [0, 1], clamp), interpolate(t, [b, b + MIX.duckFrames], [1, 0], clamp)))) : 0;
+            const level = interpolate(speaking, [0, 1], [MIX.music, MIX.musicDucked]);
+            return level * interpolate(t, [0, MIX.fadeIn, DURATION - 1 - MIX.fadeOut, DURATION - 1], [0, 1, 1, 0], clamp);
           }}
         />
       )}
-      {voiceover && <Audio src={staticFile('voiceover.mp3')} />}
+      {/* One sequence per voice line, at the script's start time (frame = seconds × 30). */}
+      {voiceover &&
+        vo.lines.map((l: { n: number; start: number }) => (
+          <Sequence key={`vo${l.n}`} from={Math.round(l.start * FPS)} layout="none">
+            <Audio src={staticFile(`vo/${String(l.n).padStart(2, '0')}.wav`)} />
+          </Sequence>
+        ))}
       {sfx && (
         <>
           {whooshes.map((w) => (
             <Sequence key={`w${w}`} from={w} layout="none">
-              <Audio src={staticFile('sfx/whoosh.wav')} volume={0.7} />
+              <Audio src={staticFile('sfx/whoosh.wav')} volume={MIX.sfx} />
             </Sequence>
           ))}
           {taps.map((t) => (
             <Sequence key={`t${t}`} from={t} layout="none">
-              <Audio src={staticFile('sfx/tap.wav')} volume={0.9} />
+              <Audio src={staticFile('sfx/tap.wav')} volume={MIX.sfx} />
             </Sequence>
           ))}
           <Sequence from={T.unlock} layout="none">
-            <Audio src={staticFile('sfx/chime.wav')} volume={1} />
+            <Audio src={staticFile('sfx/chime.wav')} volume={MIX.sfx} />
           </Sequence>
           <Sequence from={T.cardLift} layout="none">
-            <Audio src={staticFile('sfx/pop.wav')} volume={1} />
+            <Audio src={staticFile('sfx/pop.wav')} volume={MIX.sfx} />
           </Sequence>
         </>
       )}

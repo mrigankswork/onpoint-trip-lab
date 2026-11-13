@@ -1,2 +1,4 @@
-audio/vo
-audio/music.wav
+audio/.venv
+audio/models
+audio/candidates
+out

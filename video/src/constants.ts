@@ -67,8 +67,13 @@ export const T = {
   cardLift: 1620,
 };
 
-// When the voiceover speaks, in frames [start, end]. The music ducks under these.
-// Keep in step with audio/voiceover.mjs (start second and measured length of each line).
-export const VO: [number, number][] = [
-  [0.4, 5.34], [10.3, 2.02], [14.3, 3.38], [22.3, 5.8], [29.4, 2.77], [36.3, 2.3], [41.3, 2.89], [47.3, 3.9], [53.3, 1.3], [57.2, 2.66],
-].map(([at, len]) => [Math.round(at * FPS), Math.round((at + len) * FPS)]);
+// Sound levels.
+export const MIX = {
+  music: 0.35, // normal
+  musicDucked: 0.12, // while a voice line plays
+  duckFrames: 8,
+  fadeIn: 30, // 1s
+  fadeOut: 60, // 2s, ending exactly on the last frame
+  sfx: 0.25, // never covers the voice
+  musicStart: 0, // seconds into the track to start from
+};

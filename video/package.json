@@ -4,8 +4,8 @@
   "description": "",
   "scripts": {
     "studio": "remotion studio src/index.ts",
-    "render": "node render.mjs OnpointDemo",
-    "render:vertical": "node render.mjs OnpointDemoVertical"
+    "render": "node render.mjs",
+    "voice": "audio/.venv/bin/python audio/tts.py all"
   },
   "keywords": [],
   "author": "",
