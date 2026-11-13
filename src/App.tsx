@@ -144,6 +144,15 @@ function Shell() {
         </div>
       </Stage>
     );
+  } else if (layout === 'bare') {
+    // Clip capture: the app screen alone, with its status bar and safe areas, at the full viewport.
+    body = (
+      <div className="h-[100dvh]">
+        <PhoneFrame bare>
+          <PhoneScreen />
+        </PhoneFrame>
+      </div>
+    );
   } else if (layout === 'desktop') {
     body = (
       <div className="h-full">

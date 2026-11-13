@@ -33,7 +33,11 @@ const params = new URLSearchParams(
   typeof window === 'undefined' ? '' : window.location.search || window.location.hash.split('?')[1] || '',
 );
 export const IS_DEMO = params.get('demo') === '1';
-export const LAYOUT_PARAM = params.get('layout') as 'portrait' | 'landscape' | null;
+export const LAYOUT_PARAM = params.get('layout') as 'portrait' | 'landscape' | 'bare' | null;
+/** captions=0 hides the demo captions and progress line (used when recording clips). */
+export const CAPTIONS_OFF = params.get('captions') === '0';
+/** scene=N plays demo step N on its own and stops when it ends. */
+export const SCENE = IS_DEMO ? Math.floor(Number(params.get('scene'))) || null : null;
 
 export type Theme = 'light' | 'dark';
 
@@ -139,8 +143,8 @@ export const useLab = create<LabState>((set, get) => ({
   activeDrops: DEFAULT_DROPS,
   trackedOrders: seedOrders(),
   assumptionOverrides: {},
-  demoStep: 0,
-  captionsHidden: false,
+  demoStep: SCENE ? SCENE - 1 : 0,
+  captionsHidden: CAPTIONS_OFF,
   panelTab: 'story',
   highlight: null,
   toast: null,

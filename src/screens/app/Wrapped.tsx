@@ -72,6 +72,7 @@ export default function Wrapped() {
       <div className="mx-auto w-[78%]">
         <div
           ref={card}
+          data-wrapped-card
           className="relative flex aspect-[9/16] w-full flex-col overflow-hidden rounded-[28px] p-5 text-white"
           style={{ background: 'linear-gradient(170deg, var(--brand) 0%, var(--ink) 70%)' }}
         >

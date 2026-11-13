@@ -133,3 +133,13 @@ To change the script, edit `src/data/demoScript.ts`. Each step has a caption, a 
 - [x] No real brand logos, no photos of people, disclaimer on every screen and in Profile.
 - [x] Lighthouse mobile performance 90+ (96 on the local production build).
 - [ ] Mobile Safari and a real Android phone: not yet checked by hand. Checked in headless Chrome only.
+
+## Recording clips for the demo film
+
+Three more URL options, used by `scripts/capture.mjs`:
+
+- `?layout=bare`: the app screen alone at the full viewport, with its status bar and safe areas, no phone frame.
+- `?captions=0`: hides the demo captions and the progress line.
+- `?demo=1&scene=N`: plays demo step N on its own and stops when it ends.
+
+`node scripts/capture.mjs` records one clip per step into `./captures` (needs the preview server on port 4173, Chrome and ffmpeg). The film itself is in `./video`; see `video/README.md`.

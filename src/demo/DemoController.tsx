@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { demoScript, type DemoCtx } from '../data/demoScript';
 import { useFlip } from '../hooks';
-import { useLab } from '../store/useLab';
+import { CAPTIONS_OFF, SCENE, useLab } from '../store/useLab';
 
-const LAST = demoScript.length - 1;
+const LAST = Math.min(demoScript.length - 1, SCENE ? SCENE - 1 : Infinity);
 
 /**
  * Plays the script in data/demoScript.ts.
@@ -15,7 +15,7 @@ export function DemoController({ sideBySide }: { sideBySide: boolean }) {
   const flip = useFlip();
   const step = useLab((s) => s.demoStep);
   const setStep = useLab((s) => s.setDemoStep);
-  const [playing, setPlaying] = useState(false);
+  const [playing, setPlaying] = useState(!!SCENE);
   const [run, setRun] = useState(0);
   const [ripple, setRipple] = useState<{ x: number; y: number; key: number } | null>(null);
   const startedAt = useRef(0);
@@ -73,6 +73,8 @@ export function DemoController({ sideBySide }: { sideBySide: boolean }) {
     s.setup(ctx);
     s.actions.forEach((a) => later(() => a.run(ctx), a.at));
     startedAt.current = performance.now();
+    // For clip capture: when this step began, on the wall clock.
+    document.body.dataset.sceneStart = String(performance.timeOrigin + startedAt.current);
     return () => {
       cancelled = true;
       timers.forEach(clearTimeout);
@@ -86,7 +88,10 @@ export function DemoController({ sideBySide }: { sideBySide: boolean }) {
     const left = demoScript[step].seconds * 1000 - (performance.now() - startedAt.current);
     const id = setTimeout(() => {
       if (step < LAST) setStep(step + 1);
-      else setPlaying(false);
+      else {
+        setPlaying(false);
+        document.body.dataset.sceneDone = '1';
+      }
     }, Math.max(0, left));
     return () => clearTimeout(id);
   }, [playing, step, run, setStep]);
@@ -148,7 +153,7 @@ export function DemoController({ sideBySide }: { sideBySide: boolean }) {
   const total = demoScript.length;
   return (
     <>
-      <div className="pointer-events-none fixed inset-x-0 top-0 z-[100] h-[3px] bg-white/10" aria-hidden>
+      <div className={`pointer-events-none fixed inset-x-0 top-0 z-[100] h-[3px] bg-white/10 ${CAPTIONS_OFF ? 'hidden' : ''}`} aria-hidden>
         <div
           className="h-full bg-unlock"
           style={{

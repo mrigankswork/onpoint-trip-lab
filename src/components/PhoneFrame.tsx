@@ -17,7 +17,7 @@ const DEVICE = { w: SCREEN.w + BEZEL * 2, h: SCREEN.h + BEZEL * 2 };
  * room, zoomed down evenly when there is not, so the screen never loses its proportions.
  * The app reads --safe-top / --safe-bottom to stay clear of the island and home indicator.
  */
-export function PhoneFrame({ children }: { children: ReactNode }) {
+export function PhoneFrame({ children, bare = false }: { children: ReactNode; bare?: boolean }) {
   const box = useRef<HTMLDivElement>(null);
   const [zoom, setZoom] = useState(1);
   const now = useNow(20_000);
@@ -32,28 +32,35 @@ export function PhoneFrame({ children }: { children: ReactNode }) {
     return () => ro.disconnect();
   }, []);
 
-  const time = new Date(now).toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit', hour12: false });
+  // bare: the screen alone at the full viewport, for clip capture. The video draws its own bezel.
+  const time = bare
+    ? '9:41'
+    : new Date(now).toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit', hour12: false });
 
   return (
     <div ref={box} className="flex h-full w-full items-center justify-center overflow-hidden">
       <div
         className="relative shrink-0 bg-ink"
-        style={{
-          width: DEVICE.w,
-          height: DEVICE.h,
-          padding: BEZEL,
-          zoom,
-          borderRadius: CORNER + BEZEL,
-          boxShadow:
-            '0 0 0 2px rgb(var(--muted-rgb) / 0.7), 0 0 0 3px rgb(var(--ink-rgb) / 0.9), 0 30px 120px rgb(var(--brand-rgb) / 0.6)',
-        }}
+        style={
+          bare
+            ? { width: '100%', height: '100%' }
+            : {
+                width: DEVICE.w,
+                height: DEVICE.h,
+                padding: BEZEL,
+                zoom,
+                borderRadius: CORNER + BEZEL,
+                boxShadow:
+                  '0 0 0 2px rgb(var(--muted-rgb) / 0.7), 0 0 0 3px rgb(var(--ink-rgb) / 0.9), 0 30px 120px rgb(var(--brand-rgb) / 0.6)',
+              }
+        }
       >
         <div
           data-theme={theme}
           className="relative h-full w-full overflow-hidden bg-canvas"
           style={
             {
-              borderRadius: CORNER,
+              borderRadius: bare ? 0 : CORNER,
               '--safe-top': `${SAFE_TOP}px`,
               '--safe-bottom': `${SAFE_BOTTOM}px`,
             } as CSSProperties

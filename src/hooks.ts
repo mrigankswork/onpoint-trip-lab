@@ -37,7 +37,7 @@ const PAIRS: Record<string, string> = {
 const NEUTRAL = ['/profile', '/team'];
 export const TRIP_PATHS = ['/onboarding', '/home', '/goal', '/shop', '/tracking', '/squad', '/unlock', '/wrapped'];
 
-export type Layout = 'mobile' | 'desktop' | 'portrait' | 'landscape';
+export type Layout = 'mobile' | 'desktop' | 'portrait' | 'landscape' | 'bare';
 
 /** mobile and desktop follow the window; portrait and landscape are the fixed recording layouts. */
 export function useLayout(): Layout {
