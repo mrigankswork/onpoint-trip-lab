@@ -48,7 +48,7 @@ export default function Squad() {
         <p className="mt-1 font-display text-[28px] font-extrabold leading-tight">
           <Num>{fmtINR(pooled)}</Num> <span className="text-[16px] font-bold text-muted">of {fmtINR(groupGoal)}</span>
         </p>
-        <div className="mt-3 flex h-4 w-full overflow-hidden rounded-full bg-ink/10">
+        <div className="mt-3 flex h-4 w-full overflow-hidden rounded-full bg-fg/10">
           {joined.map((m) => (
             <span
               key={m.id}
@@ -96,7 +96,7 @@ export default function Squad() {
         <Send size={16} /> Invite a friend · +{fmtInt(e.v.referralBonus)} Onpoints each
       </button>
 
-      <p className="rounded-card bg-peach p-4 text-[13px] font-medium">
+      <p className="rounded-card bg-peach text-ink p-4 text-[13px] font-medium">
         Pooling doesn't make points faster. It makes the trip happen.
       </p>
 

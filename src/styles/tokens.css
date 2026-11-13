@@ -26,6 +26,26 @@
   --muted-rgb: 138 134 152;
   --teal: #0e8f83; /* Team addition: "Public source" tag only */
   --teal-rgb: 14 143 131;
+
+  /* Theme roles. Light values point at the tokens above; dark mode swaps them below. */
+  --fg-rgb: 1 0 13; /* text and hairlines = ink */
+  --surface-rgb: 255 255 255; /* cards, sheets, bars */
+  --accent-rgb: 77 16 137; /* brand used as text = brand */
+}
+
+/* Dark mode, set on the app's own root so the Trip Lab stays light. Team additions. */
+[data-theme='dark'] {
+  color-scheme: dark;
+  --canvas: #0d0a18;
+  --canvas-rgb: 13 10 24;
+  --surface-rgb: 27 22 42;
+  --fg-rgb: 247 245 251; /* = light canvas */
+  --accent-rgb: 190 160 250; /* brand purple, lifted so it reads on dark */
+}
+
+/* Ink cards would vanish on a dark canvas: give them an edge. */
+[data-theme='dark'] .rounded-card.bg-ink {
+  box-shadow: inset 0 0 0 1px rgb(var(--fg-rgb) / 0.14);
 }
 
 html,
@@ -75,7 +95,7 @@ input[type='range'] {
 
 @layer components {
   .card {
-    @apply rounded-card border border-ink/[0.08] bg-white;
+    @apply rounded-card border border-fg/[0.08] bg-surface;
   }
   .sticker {
     @apply inline-flex items-center rounded-lg px-2 py-1 font-display text-xs font-extrabold uppercase tracking-wide;
@@ -84,7 +104,7 @@ input[type='range'] {
     @apply inline-flex items-center justify-center gap-2 rounded-full bg-brand px-5 py-3 text-sm font-semibold text-white transition-opacity active:opacity-80 disabled:opacity-40;
   }
   .btn-ghost {
-    @apply inline-flex items-center justify-center gap-2 rounded-full border border-ink/[0.12] bg-white px-5 py-3 text-sm font-semibold text-ink active:opacity-80;
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-fg/[0.12] bg-surface px-5 py-3 text-sm font-semibold text-fg active:opacity-80;
   }
   .label {
     @apply text-[11px] font-semibold uppercase tracking-wider text-muted;

@@ -25,7 +25,7 @@ export default function TodayHome() {
           <Num>{fmtInt(e.today.balance)}</Num>
         </p>
         <p className="mt-1 text-[13px] text-muted">Onpoints · {fmtInt(e.today.monthly)} earned per month</p>
-        <div className="mt-4 border-t border-ink/[0.08] pt-3 text-[13px] text-muted">
+        <div className="mt-4 border-t border-fg/[0.08] pt-3 text-[13px] text-muted">
           Pending: {fmtInt(e.today.pending)} Onpoints
         </div>
       </section>

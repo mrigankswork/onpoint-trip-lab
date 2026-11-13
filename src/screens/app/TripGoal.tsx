@@ -4,13 +4,20 @@ import { RouteLine } from '../../components/RouteLine';
 import { Num, Screen } from '../../components/ui';
 import { bluChips } from '../../engine/calc';
 import { fmtINR, fmtInt, fmtMonths, fmtTripPct } from '../../engine/format';
-import { useEngine } from '../../store/useLab';
+import { useEngine, useLab } from '../../store/useLab';
 
 const FLIGHT_SAMPLE = 1000;
 
 export default function TripGoal() {
   const e = useEngine();
   const navigate = useNavigate();
+  const showToast = useLab((s) => s.showToast);
+  // The Stay has its own screen. The other two answer in place.
+  const open = (m: (typeof e.milestones)[number]) => {
+    if (m.key === 'stay') navigate('/unlock');
+    else if (m.unlocked) showToast(`${m.label} unlocked · worth ${fmtINR(m.cost)}`);
+    else showToast(`${m.label} unlocks in ${fmtMonths(m.monthsToGo)} months at this pace`);
+  };
   return (
     <Screen>
       <section className="rounded-card p-5 text-white" style={{ background: e.dest.gradient }}>
@@ -33,9 +40,9 @@ export default function TripGoal() {
         {e.milestones.map((m) => (
           <button
             key={m.key}
-            onClick={() => m.key === 'stay' && navigate('/unlock')}
+            onClick={() => open(m)}
             className={`flex w-full items-center gap-3 rounded-card border p-4 text-left ${
-              m.unlocked ? 'border-ink bg-unlock' : 'border-ink/[0.08] bg-white'
+              m.unlocked ? 'border-ink bg-unlock text-ink' : 'border-fg/[0.08] bg-surface'
             }`}
           >
             <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${m.unlocked ? 'bg-ink text-unlock' : 'bg-canvas text-muted'}`}>

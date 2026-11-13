@@ -14,7 +14,7 @@ import { orderStage, STAGES, useEngine, useLab } from '../../store/useLab';
 export function StatusChip({ stage }: { stage: number }) {
   const done = stage === STAGES.length - 1;
   return (
-    <span className={`whitespace-nowrap rounded-full px-2 py-0.5 text-[11px] font-semibold ${done ? 'bg-brand/10 text-brand' : 'bg-orange/10 text-orange'}`}>
+    <span className={`whitespace-nowrap rounded-full px-2 py-0.5 text-[11px] font-semibold ${done ? 'bg-accent/10 text-accent' : 'bg-orange/10 text-orange'}`}>
       {STAGES[stage]}
     </span>
   );
@@ -108,7 +108,7 @@ export default function Home() {
       )}
 
       {stayUnlocked && (
-        <button onClick={() => navigate('/unlock')} className="flex w-full items-center justify-between rounded-card bg-unlock p-4 text-left">
+        <button onClick={() => navigate('/unlock')} className="flex w-full items-center justify-between rounded-card bg-unlock p-4 text-left text-ink">
           <span className="flex items-center gap-2 font-display text-[16px] font-bold">
             <LockOpen size={18} /> Stay unlocked. Book your hostel
           </span>

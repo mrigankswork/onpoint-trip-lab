@@ -64,7 +64,7 @@ export const demoScript: DemoStep[] = [
     actions: [
       { at: 900, run: ({ tap }) => tap('tab-redeem') },
       { at: 3800, run: ({ tap }) => tap('flight-link') },
-      { at: 5600, run: ({ tap }) => tap('flight-link') },
+      { at: 6600, run: ({ tap }) => tap('sheet-close') },
     ],
   },
   {

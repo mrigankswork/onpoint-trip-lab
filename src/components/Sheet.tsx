@@ -35,7 +35,7 @@ export function Sheet({
           <motion.div
             role="dialog"
             aria-label={title}
-            className="relative w-full rounded-t-[28px] bg-white p-5"
+            className="relative w-full rounded-t-[28px] bg-surface p-5"
             style={{ paddingBottom: 'calc(max(8px, var(--safe-bottom, env(safe-area-inset-bottom, 0px))) + 16px)' }}
             initial={{ y: '100%' }}
             animate={{ y: 0 }}
@@ -44,7 +44,7 @@ export function Sheet({
           >
             <div className="mb-3 flex items-center justify-between">
               <h2 className="font-display text-lg font-bold">{title}</h2>
-              <button aria-label="Close" onClick={onClose} className="rounded-full bg-canvas p-2">
+              <button data-demo="sheet-close" aria-label="Close" onClick={onClose} className="rounded-full bg-canvas p-2">
                 <X size={16} />
               </button>
             </div>

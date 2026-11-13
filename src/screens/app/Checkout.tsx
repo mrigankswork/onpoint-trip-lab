@@ -47,14 +47,14 @@ export default function Checkout() {
         Shop as usual on {brand.name}. We track the order and bring the points back to your trip.
       </p>
       <div className="mt-4 flex items-center justify-between rounded-[14px] bg-canvas p-3">
-        <button aria-label="Decrease amount" onClick={() => setAmount(Math.max(STEP, amount - STEP))} className="rounded-full bg-white p-3">
+        <button aria-label="Decrease amount" onClick={() => setAmount(Math.max(STEP, amount - STEP))} className="rounded-full bg-surface p-3">
           <Minus size={16} />
         </button>
         <div className="text-center">
           <p className="font-display text-3xl font-bold">{fmtINR(amount)}</p>
           <p className="text-[12px] text-muted">order amount (simulated)</p>
         </div>
-        <button aria-label="Increase amount" onClick={() => setAmount(amount + STEP)} className="rounded-full bg-white p-3">
+        <button aria-label="Increase amount" onClick={() => setAmount(amount + STEP)} className="rounded-full bg-surface p-3">
           <Plus size={16} />
         </button>
       </div>

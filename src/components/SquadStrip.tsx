@@ -11,10 +11,10 @@ export function RingAvatar({ member, percent, size = 44 }: { member: SquadMember
       style={{
         width: size + 10,
         height: size + 10,
-        background: `conic-gradient(var(--brand-pink) ${p * 3.6}deg, rgb(var(--ink-rgb) / 0.08) 0)`,
+        background: `conic-gradient(var(--brand-pink) ${p * 3.6}deg, rgb(var(--fg-rgb) / 0.08) 0)`,
       }}
     >
-      <span className="flex items-center justify-center rounded-full bg-white" style={{ width: size + 4, height: size + 4 }}>
+      <span className="flex items-center justify-center rounded-full bg-surface" style={{ width: size + 4, height: size + 4 }}>
         <Avatar initials={member.initials} colour={member.colour} size={size} dim={!member.joined} />
       </span>
     </span>

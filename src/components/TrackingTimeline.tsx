@@ -23,11 +23,11 @@ export function TrackingTimeline({ order, now }: { order: Order; now: number }) 
         return (
           <li key={label} className="relative flex gap-3 pb-5 last:pb-0">
             {i < STAGES.length - 1 && (
-              <span className={`absolute left-[13px] top-7 h-[calc(100%-28px)] w-[2px] ${i < stage ? 'bg-brand' : 'bg-ink/10'}`} />
+              <span className={`absolute left-[13px] top-7 h-[calc(100%-28px)] w-[2px] ${i < stage ? 'bg-brand' : 'bg-fg/10'}`} />
             )}
             <motion.span
               className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-2 ${
-                done ? 'border-brand bg-brand text-white' : 'border-ink/15 bg-white text-transparent'
+                done ? 'border-brand bg-brand text-white' : 'border-fg/15 bg-surface text-transparent'
               }`}
               animate={current ? { scale: [1, 1.15, 1] } : { scale: 1 }}
               transition={{ duration: 0.4 }}
@@ -35,7 +35,7 @@ export function TrackingTimeline({ order, now }: { order: Order; now: number }) 
               <Check size={14} strokeWidth={3} />
             </motion.span>
             <div className="-mt-0.5">
-              <p className={`text-[14px] font-semibold ${done ? 'text-ink' : 'text-muted'}`}>{label}</p>
+              <p className={`text-[14px] font-semibold ${done ? 'text-fg' : 'text-muted'}`}>{label}</p>
               <p className="text-[12px] text-muted">{done ? stageTime(order, i) : 'Waiting'}</p>
             </div>
           </li>

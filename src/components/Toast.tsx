@@ -20,7 +20,7 @@ export function Toast() {
         {toast && (
           <motion.div
             key={toast.id}
-            className="rounded-full bg-ink px-4 py-2.5 text-center text-[13px] font-semibold text-white"
+            className="rounded-full bg-fg px-4 py-2.5 text-center text-[13px] font-semibold text-canvas"
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}

@@ -60,13 +60,13 @@ export default function Onboarding() {
         <button
           aria-label="Back"
           onClick={() => setStep(Math.max(0, step - 1))}
-          className={`rounded-full bg-white p-2 ${step === 0 ? 'invisible' : ''}`}
+          className={`rounded-full bg-surface p-2 ${step === 0 ? 'invisible' : ''}`}
         >
           <ArrowLeft size={16} />
         </button>
         <div className="flex flex-1 gap-1.5" role="progressbar" aria-valuemin={1} aria-valuemax={LAST + 1} aria-valuenow={step + 1}>
           {Array.from({ length: LAST + 1 }, (_, i) => (
-            <span key={i} className={`h-1.5 flex-1 rounded-full transition-colors duration-200 ${i <= step ? 'bg-brand' : 'bg-ink/10'}`} />
+            <span key={i} className={`h-1.5 flex-1 rounded-full transition-colors duration-200 ${i <= step ? 'bg-brand' : 'bg-fg/10'}`} />
           ))}
         </div>
         <span className="w-8 text-right text-[12px] font-semibold text-muted">
@@ -107,7 +107,7 @@ export default function Onboarding() {
                 <ul className="card divide-y divide-ink/[0.06]">
                   {how.map((h, i) => (
                     <li key={h.title} className="flex items-center gap-3 p-3.5">
-                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand/10 text-brand">
+                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent/10 text-accent">
                         <h.icon size={18} />
                       </span>
                       <span>
@@ -195,7 +195,7 @@ export default function Onboarding() {
                     </button>
                   );
                 })}
-                <p className="rounded-card bg-peach p-3.5 text-[12.5px] font-medium">
+                <p className="rounded-card bg-peach text-ink p-3.5 text-[12.5px] font-medium">
                   A squad doesn't make points faster. It makes the trip actually happen.
                 </p>
               </>
@@ -245,7 +245,7 @@ export default function Onboarding() {
       </div>
 
       <div
-        className="shrink-0 border-t border-ink/[0.06] bg-canvas px-4 pt-3"
+        className="shrink-0 border-t border-fg/[0.06] bg-canvas px-4 pt-3"
         style={{ paddingBottom: 'max(8px, var(--safe-bottom, env(safe-area-inset-bottom, 0px)))' }}
       >
         <button

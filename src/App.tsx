@@ -5,7 +5,6 @@ import { LabView, preloadLab } from './components/LabView';
 import { PhoneFrame } from './components/PhoneFrame';
 import { PhoneScreen } from './components/PhoneScreen';
 import { ViewSwitch } from './components/ViewSwitch';
-import { WingMark } from './components/ui';
 import { CaptionOverlay } from './demo/CaptionOverlay';
 import { DemoController } from './demo/DemoController';
 import { useLayout } from './hooks';
@@ -44,19 +43,9 @@ function Desktop() {
           dark ? 'text-white' : 'border-b border-ink/[0.08] text-ink'
         }`}
       >
-        <div className="flex items-center gap-2.5">
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand text-white">
-            <WingMark size={18} />
-          </span>
-          <div>
-            <p className="font-display text-[18px] font-extrabold leading-none">Onpoint Trip Lab</p>
-            <p className={`mt-1 text-[11px] ${dark ? 'text-white/60' : 'text-muted'}`}>Concept prototype · Ascend 3.0</p>
-          </div>
-        </div>
+        <span />
         <ViewSwitch tone={dark ? 'dark' : 'light'} />
-        <p className={`hidden text-right text-[12px] lg:block ${dark ? 'text-white/60' : 'text-muted'}`}>
-          {dark ? 'What Riya sees' : 'Why it works, and every number behind it'}
-        </p>
+        <span />
       </header>
       <main className="relative min-h-0 flex-1">
           {view === 'app' ? (

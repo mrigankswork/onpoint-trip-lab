@@ -1,6 +1,7 @@
 import { BatteryFull, Signal, Wifi } from 'lucide-react';
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { useNow } from '../hooks';
+import { useLab } from '../store/useLab';
 
 // iPhone 18 Pro: 2622 × 1206 pixels at 3x = 402 × 874 points.
 export const SCREEN = { w: 402, h: 874 };
@@ -20,6 +21,7 @@ export function PhoneFrame({ children }: { children: ReactNode }) {
   const box = useRef<HTMLDivElement>(null);
   const [zoom, setZoom] = useState(1);
   const now = useNow(20_000);
+  const theme = useLab((s) => s.theme);
 
   useEffect(() => {
     const el = box.current!;
@@ -47,6 +49,7 @@ export function PhoneFrame({ children }: { children: ReactNode }) {
         }}
       >
         <div
+          data-theme={theme}
           className="relative h-full w-full overflow-hidden bg-canvas"
           style={
             {
@@ -61,7 +64,7 @@ export function PhoneFrame({ children }: { children: ReactNode }) {
           {/* Status bar, Dynamic Island and home indicator: device chrome, not part of the app. */}
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-x-0 top-0 z-[70] flex items-center justify-between px-9 text-ink"
+            className="pointer-events-none absolute inset-x-0 top-0 z-[70] flex items-center justify-between px-9 text-fg"
             style={{ height: SAFE_TOP }}
           >
             <span className="w-[54px] text-center text-[16px] font-semibold">{time}</span>
@@ -72,7 +75,7 @@ export function PhoneFrame({ children }: { children: ReactNode }) {
             </span>
           </div>
           <div aria-hidden className="pointer-events-none absolute left-1/2 top-[12px] z-[70] h-[35px] w-[122px] -translate-x-1/2 rounded-full bg-ink" />
-          <div aria-hidden className="pointer-events-none absolute bottom-[8px] left-1/2 z-[70] h-[5px] w-[140px] -translate-x-1/2 rounded-full bg-ink/80" />
+          <div aria-hidden className="pointer-events-none absolute bottom-[8px] left-1/2 z-[70] h-[5px] w-[140px] -translate-x-1/2 rounded-full bg-fg/80" />
         </div>
       </div>
     </div>

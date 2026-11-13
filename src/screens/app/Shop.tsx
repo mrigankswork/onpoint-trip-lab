@@ -53,7 +53,7 @@ export default function Shop() {
               <button key={b.id} onClick={() => navigate('/unlock')} className="card p-3.5 text-left">
                 <p className="font-display text-[17px] font-bold">{b.name}</p>
                 <p className="text-[12px] text-muted">{b.category}</p>
-                <p className="mt-3 text-[13px] font-semibold text-brand">Use your Stay unlock here</p>
+                <p className="mt-3 text-[13px] font-semibold text-accent">Use your Stay unlock here</p>
               </button>
             );
           }

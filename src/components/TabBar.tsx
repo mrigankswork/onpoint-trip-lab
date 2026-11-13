@@ -25,7 +25,7 @@ export function TabBar() {
   const tabs = trip ? TRIP_TABS : TODAY_TABS;
   return (
     <nav
-      className="flex shrink-0 border-t border-ink/[0.08] bg-white px-2 pt-2"
+      className="flex shrink-0 border-t border-fg/[0.08] bg-surface px-2 pt-2"
       style={{ paddingBottom: 'max(8px, var(--safe-bottom, env(safe-area-inset-bottom, 0px)))' }}
     >
       {tabs.map((t) => {
@@ -38,7 +38,7 @@ export function TabBar() {
             onClick={() => navigate(t.to)}
             aria-current={on ? 'page' : undefined}
             className={`flex flex-1 flex-col items-center gap-0.5 rounded-xl py-1 text-[11px] font-medium ${
-              on ? (trip ? 'text-brand' : 'text-ink') : 'text-muted'
+              on ? (trip ? 'text-accent' : 'text-fg') : 'text-muted'
             }`}
           >
             <Icon size={20} strokeWidth={on ? 2.4 : 1.8} />

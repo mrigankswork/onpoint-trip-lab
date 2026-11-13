@@ -24,7 +24,7 @@ export function ProgressBar({
       aria-valuemin={0}
       aria-valuemax={100}
       className="relative w-full overflow-hidden rounded-full"
-      style={{ height, background: tone === 'dark' ? 'rgb(255 255 255 / 0.2)' : 'rgb(var(--ink-rgb) / 0.1)' }}
+      style={{ height, background: tone === 'dark' ? 'rgb(255 255 255 / 0.2)' : 'rgb(var(--fg-rgb) / 0.1)' }}
     >
       <div
         className="absolute inset-y-0 left-0 rounded-full bg-unlock"
@@ -42,7 +42,7 @@ export function ProgressBar({
         <span
           key={m}
           className="absolute inset-y-0 w-[2px]"
-          style={{ left: `${m}%`, background: tone === 'dark' ? 'rgb(var(--ink-rgb) / 0.55)' : 'rgb(var(--ink-rgb) / 0.35)' }}
+          style={{ left: `${m}%`, background: tone === 'dark' ? 'rgb(var(--ink-rgb) / 0.55)' : 'rgb(var(--fg-rgb) / 0.35)' }}
         />
       ))}
     </div>

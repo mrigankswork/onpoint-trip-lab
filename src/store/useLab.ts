@@ -35,12 +35,15 @@ const params = new URLSearchParams(
 export const IS_DEMO = params.get('demo') === '1';
 export const LAYOUT_PARAM = params.get('layout') as 'portrait' | 'landscape' | null;
 
+export type Theme = 'light' | 'dark';
+
 interface Saved {
   mode?: Mode;
   month?: number;
   onboarded?: boolean;
   destinationId?: DestinationId;
   tripType?: 'solo' | 'squad';
+  theme?: Theme;
 }
 
 // Remembers where the visitor left off: mode, month and the trip they set up.
@@ -54,6 +57,7 @@ const loadSaved = (): Saved => {
       onboarded: raw.onboarded === true ? true : undefined,
       destinationId: raw.destinationId in TRIP_PIECES ? raw.destinationId : undefined,
       tripType: raw.tripType === 'solo' || raw.tripType === 'squad' ? raw.tripType : undefined,
+      theme: raw.theme === 'dark' ? 'dark' : undefined,
     };
   } catch {
     return {};
@@ -103,6 +107,9 @@ export interface LabState {
   setPanelTab: (t: PanelTab) => void;
   setHighlight: (h: string | null) => void;
   showToast: (text: string) => void;
+  /** Appearance of the app itself. The Trip Lab is always light. */
+  theme: Theme;
+  toggleTheme: () => void;
   clearToast: () => void;
   setMonthSheet: (open: boolean) => void;
   setView: (view: 'app' | 'lab') => void;
@@ -139,6 +146,7 @@ export const useLab = create<LabState>((set, get) => ({
   toast: null,
   monthSheet: false,
   view: 'app',
+  theme: saved.theme ?? 'light',
   tourOpen: false,
   checkoutBrandId: null,
   fly: null,
@@ -192,6 +200,7 @@ export const useLab = create<LabState>((set, get) => ({
   showToast: (text) => set({ toast: { id: ++toastId, text } }),
   clearToast: () => set({ toast: null }),
   setMonthSheet: (monthSheet) => set({ monthSheet }),
+  toggleTheme: () => set({ theme: get().theme === 'dark' ? 'light' : 'dark' }),
   openCheckout: (checkoutBrandId) => set({ checkoutBrandId }),
   setFly: (fly) => set({ fly }),
   setLastNav: (lastNav) => set({ lastNav }),
@@ -225,12 +234,13 @@ if (!IS_DEMO) {
       s.month === p.month &&
       s.onboarded === p.onboarded &&
       s.destinationId === p.destinationId &&
-      s.tripType === p.tripType
+      s.tripType === p.tripType &&
+      s.theme === p.theme
     )
       return;
     try {
-      const { mode, month, onboarded, destinationId, tripType } = s;
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ mode, month, onboarded, destinationId, tripType }));
+      const { mode, month, onboarded, destinationId, tripType, theme } = s;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ mode, month, onboarded, destinationId, tripType, theme }));
     } catch {
       /* storage unavailable: fine */
     }

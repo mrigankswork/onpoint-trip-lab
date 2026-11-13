@@ -12,7 +12,7 @@ export function ModeSwitch() {
   const mode = useLab((s) => s.mode);
   const flip = useFlip();
   return (
-    <div role="tablist" aria-label="Product mode" className="relative flex rounded-full border border-ink/[0.1] bg-white p-1">
+    <div role="tablist" aria-label="Product mode" className="relative flex rounded-full border border-fg/[0.1] bg-surface p-1">
       {SIDES.map((s) => {
         const on = mode === s.mode;
         return (

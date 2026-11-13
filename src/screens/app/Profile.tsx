@@ -1,4 +1,4 @@
-import { ArrowRight, RotateCcw } from 'lucide-react';
+import { ArrowRight, Moon, RotateCcw } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Avatar, Screen } from '../../components/ui';
 import { DISCLAIMER, persona } from '../../data/persona';
@@ -13,6 +13,8 @@ export default function Profile() {
   const setMonth = useLab((s) => s.setMonth);
   const setPanelTab = useLab((s) => s.setPanelTab);
   const setView = useLab((s) => s.setView);
+  const theme = useLab((s) => s.theme);
+  const toggleTheme = useLab((s) => s.toggleTheme);
   const layout = useLayout();
 
   const openLab = () => {
@@ -51,6 +53,23 @@ export default function Profile() {
       </section>
 
       <button
+        role="switch"
+        aria-checked={theme === 'dark'}
+        onClick={toggleTheme}
+        className="card no-press flex w-full items-center justify-between p-4 text-left"
+      >
+        <span className="flex items-center gap-3 text-[15px] font-semibold">
+          <Moon size={18} /> Dark mode
+        </span>
+        <span className={`flex h-7 w-12 items-center rounded-full p-0.5 transition-colors ${theme === 'dark' ? 'bg-brand' : 'bg-fg/10'}`}>
+          <span
+            className="h-6 w-6 rounded-full bg-white transition-transform duration-200"
+            style={{ transform: theme === 'dark' ? 'translateX(20px)' : 'none' }}
+          />
+        </span>
+      </button>
+
+      <button
         data-demo="team-link"
         onClick={openLab}
         className="flex w-full items-center justify-between rounded-card bg-brand p-4 text-left font-display text-[16px] font-bold text-white"
@@ -62,7 +81,7 @@ export default function Profile() {
         <RotateCcw size={16} /> Start over from onboarding
       </button>
 
-      <section className="rounded-card bg-peach p-4">
+      <section className="rounded-card bg-peach text-ink p-4">
         <p className="label !text-ink/60">Disclaimer</p>
         <p className="mt-1 text-[13px] leading-relaxed">{DISCLAIMER}</p>
       </section>

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Clock } from 'lucide-react';
+import { Clock, Moon, Sun } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { fmtMonths } from '../engine/format';
@@ -50,6 +50,8 @@ export function PhoneScreen({ labButton = false }: { labButton?: boolean }) {
   const monthSheet = useLab((s) => s.monthSheet);
   const setMonthSheet = useLab((s) => s.setMonthSheet);
   const setView = useLab((s) => s.setView);
+  const theme = useLab((s) => s.theme);
+  const toggleTheme = useLab((s) => s.toggleTheme);
 
   // The route decides the mode, so deep links and tab taps stay consistent with the switch.
   useEffect(() => {
@@ -63,9 +65,9 @@ export function PhoneScreen({ labButton = false }: { labButton?: boolean }) {
   const showTabs = pathname !== '/onboarding';
 
   return (
-    <div data-phone className="relative flex h-full w-full flex-col overflow-hidden bg-canvas text-ink">
+    <div data-phone data-theme={theme} className="relative flex h-full w-full flex-col overflow-hidden bg-canvas text-fg">
       <header
-        className="z-30 grid shrink-0 grid-cols-[1fr_auto_1fr] items-center gap-2 border-b border-ink/[0.06] bg-canvas px-4 pb-2.5"
+        className="z-30 grid shrink-0 grid-cols-[1fr_auto_1fr] items-center gap-2 border-b border-fg/[0.06] bg-canvas px-4 pb-2.5"
         style={{ paddingTop: 'max(10px, calc(var(--safe-top, env(safe-area-inset-top, 0px)) + 4px))' }}
       >
         <div className="flex justify-start">
@@ -74,14 +76,19 @@ export function PhoneScreen({ labButton = false }: { labButton?: boolean }) {
               data-demo="open-lab"
               onClick={() => setView('lab')}
               aria-label="Open the Trip Lab"
-              className="flex items-center gap-1 whitespace-nowrap rounded-full bg-brand/10 px-2.5 py-1.5 text-[12px] font-bold text-brand"
+              className="flex items-center gap-1 whitespace-nowrap rounded-full bg-brand/10 px-2.5 py-1.5 text-[12px] font-bold text-accent"
             >
               <WingMark size={12} /> Lab
             </button>
           ) : (
-            <span className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-brand text-white" aria-label="Onpoint Trip Lab">
-              <WingMark size={15} />
-            </span>
+            <button
+              data-demo="theme-toggle"
+              onClick={toggleTheme}
+              aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+              className="flex h-8 w-8 items-center justify-center rounded-full bg-surface text-fg ring-1 ring-fg/[0.08]"
+            >
+              {theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
+            </button>
           )}
         </div>
         <ModeSwitch />
@@ -89,7 +96,7 @@ export function PhoneScreen({ labButton = false }: { labButton?: boolean }) {
           <button
             onClick={() => setMonthSheet(true)}
             aria-label={`M${fmtMonths(month)}: change simulated month`}
-            className="flex items-center gap-1 whitespace-nowrap rounded-full bg-white px-2.5 py-1.5 text-[12px] font-semibold text-ink ring-1 ring-ink/[0.08]"
+            className="flex items-center gap-1 whitespace-nowrap rounded-full bg-surface px-2.5 py-1.5 text-[12px] font-semibold text-fg ring-1 ring-fg/[0.08]"
           >
             <Clock size={14} />M{fmtMonths(month)}
           </button>

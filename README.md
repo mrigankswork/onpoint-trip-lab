@@ -9,6 +9,8 @@ A clickable prototype of the Onpoint app with one switch: **Today / With TRIP**.
 
 On desktop the switch is in the top bar. On a phone, tap **Lab** at the top left of the app, and **Back to the app** in the Lab.
 
+**Dark mode** is part of the app itself: the moon button at the top left of the phone (desktop), or the switch in Profile. The Trip Lab stays light. The dark values are in `src/styles/tokens.css` under `[data-theme='dark']`.
+
 ## Run it locally
 
 Needs Node 20 or newer.
@@ -59,7 +61,8 @@ src/
 ## Modelling choices worth knowing
 
 - **Bonuses land when they happen.** The live balance counts the welcome bonus and each referral only once it has landed in the story. Forecasts (3.3 and 7.5 months) always assume the full squad. Outside demo mode the whole squad counts as joined once onboarding is done, so the deck numbers show; in demo mode Aarav joins on screen in step 9.
-- **What the browser remembers.** Mode, month, the chosen trip and whether onboarding is done, in `localStorage`, so a refresh does not restart onboarding. "Start over from onboarding" in Profile resets it. Demo mode never reads or writes it.
+- **What the browser remembers.** Mode, month, the chosen trip, light or dark, and whether onboarding is done, in `localStorage`, so a refresh does not restart onboarding. "Start over from onboarding" in Profile resets it. Demo mode never reads or writes it.
+- **Every button answers.** Nothing real is bought or transferred. "Transfer" in Today mode shows a simulated result, and "How many points do I need for a flight?" opens a sheet that states what today's app cannot tell Riya, using the engine's own numbers.
 - **Simulated orders are "pending".** A checkout adds a striped pending segment to the goal bar. It never changes the confirmed balance, which always equals `balance(month)` from the engine.
 - **"Pending: 180 Onpoints" in Today mode** is derived: 75% of a month's earn (`pendingShare`, a Team assumption).
 - **Squad rank** is computed from illustrative "Drops caught" counts in `src/data/squad.ts`, not from the earn maths. Every squad member earns like Riya, so pooling does not make points faster.

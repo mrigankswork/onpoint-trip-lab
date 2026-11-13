@@ -2,7 +2,7 @@ import type { Tag } from '../engine/assumptions';
 
 // Case fact = brand purple, Public source = teal, Team assumption = orange.
 const STYLE: Record<Tag, string> = {
-  'Case fact': 'bg-brand/10 text-brand',
+  'Case fact': 'bg-accent/10 text-accent',
   'Public source': 'bg-teal/10 text-teal',
   'Team assumption': 'bg-orange/10 text-orange',
 };

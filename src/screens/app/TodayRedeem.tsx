@@ -1,14 +1,31 @@
-import { useState } from 'react';
+import { ArrowRight } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Sheet } from '../../components/Sheet';
 import { Num, Screen } from '../../components/ui';
 import { bluChips, rupeeValue } from '../../engine/calc';
-import { fmtInt } from '../../engine/format';
-import { useEngine } from '../../store/useLab';
+import { fmtINR, fmtInt, fmtMonths } from '../../engine/format';
+import { useFlip } from '../../hooks';
+import { useEngine, useLab } from '../../store/useLab';
 
 /** Conversion partners with ratios and inputs. Riya still cannot tell when she will travel. */
 export default function TodayRedeem() {
   const e = useEngine();
   const [amounts, setAmounts] = useState<Record<string, string>>({});
   const bal = e.today.balance;
+  const showToast = useLab((s) => s.showToast);
+  const demoStep = useLab((s) => s.demoStep);
+  const flip = useFlip();
+  const [flightOpen, setFlightOpen] = useState(false);
+
+  // A new demo step always starts with the sheet closed.
+  useEffect(() => setFlightOpen(false), [demoStep]);
+
+  // Simulated: the button answers, but no points move.
+  const transfer = (name: string, n: number, out: string) => {
+    if (n <= 0) showToast('Enter how many Onpoints to transfer');
+    else if (n > bal) showToast(`You have ${fmtInt(bal)} Onpoints. That is not enough yet.`);
+    else showToast(`Simulated: ${fmtInt(n)} Onpoints to ${name} = ${out}`);
+  };
 
   const partners = [
     {
@@ -54,21 +71,61 @@ export default function TodayRedeem() {
                 aria-label={`Onpoints to transfer to ${p.name}`}
                 value={amounts[p.id] ?? ''}
                 onChange={(ev) => setAmounts({ ...amounts, [p.id]: ev.target.value.replace(/\D/g, '') })}
-                className="w-0 flex-1 rounded-xl border border-ink/[0.12] bg-canvas px-3 py-2.5 text-[14px] outline-none focus:border-muted"
+                className="w-0 flex-1 rounded-xl border border-fg/[0.12] bg-canvas px-3 py-2.5 text-[14px] outline-none focus:border-muted"
               />
               <span className="w-[120px] text-right text-[12px] text-muted">{n > 0 ? p.out(n) : '—'}</span>
             </div>
-            <button disabled className="mt-3 w-full rounded-full border border-ink/[0.12] py-2.5 text-[13px] font-semibold text-muted">
+            <button
+              onClick={() => transfer(p.name, n, p.out(n))}
+              className={`mt-3 w-full rounded-full border border-fg/[0.12] py-2.5 text-[13px] font-semibold ${n > 0 ? 'text-fg' : 'text-muted'}`}
+            >
               Transfer
             </button>
           </section>
         );
       })}
 
-      {/* Opens nothing, on purpose: the current product cannot answer this. */}
-      <button data-demo="flight-link" className="block w-full py-2 text-center text-[13px] text-muted underline">
+      <button
+        data-demo="flight-link"
+        onClick={() => setFlightOpen(true)}
+        className="block w-full py-2 text-center text-[13px] text-muted underline"
+      >
         How many points do I need for a flight?
       </button>
+
+      {/* The honest answer: today's app shows a ratio, not a trip. */}
+      <Sheet open={flightOpen} onClose={() => setFlightOpen(false)} title="How many points for a flight?">
+        <p className="text-[13px] text-muted">
+          The app today shows a conversion ratio. It does not show what a trip costs in points, or when you will get there.
+        </p>
+        <dl className="mt-4 space-y-2 rounded-[14px] bg-canvas p-3 text-[13px]">
+          <div className="flex justify-between">
+            <dt className="text-muted">Your balance</dt>
+            <dd className="font-semibold">
+              {fmtInt(bal)} Onpoints = {fmtInt(bluChips(e.v, bal))} BluChips
+            </dd>
+          </div>
+          <div className="flex justify-between">
+            <dt className="text-muted">You earn</dt>
+            <dd className="font-semibold">{fmtInt(e.today.monthly)} Onpoints a month</dd>
+          </div>
+          <div className="flex justify-between">
+            <dt className="text-muted">
+              {e.dest.name} trip ({fmtINR(e.cost)})
+            </dt>
+            <dd className="font-semibold">{fmtMonths(e.today.monthsTrip)} months away</dd>
+          </div>
+        </dl>
+        <button
+          onClick={() => {
+            setFlightOpen(false);
+            flip('trip');
+          }}
+          className="btn mt-4 w-full"
+        >
+          See the answer With TRIP <ArrowRight size={16} />
+        </button>
+      </Sheet>
     </Screen>
   );
 }

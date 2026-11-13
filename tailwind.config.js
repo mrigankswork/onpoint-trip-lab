@@ -17,6 +17,9 @@ export default {
       unlock: token('unlock'),
       muted: token('muted'),
       teal: token('teal'),
+      fg: token('fg'),
+      surface: token('surface'),
+      accent: token('accent'),
     },
     fontFamily: {
       display: ['"Bricolage Grotesque"', 'system-ui', 'sans-serif'],

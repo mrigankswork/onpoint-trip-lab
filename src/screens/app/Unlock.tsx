@@ -30,7 +30,7 @@ export default function Unlock() {
         <Confetti fire={fire} />
         <motion.section
           key={String(stay.unlocked)}
-          className={`rounded-card border p-5 ${stay.unlocked ? 'border-ink bg-unlock' : 'border-ink/[0.08] bg-white'}`}
+          className={`rounded-card border p-5 ${stay.unlocked ? 'border-ink bg-unlock text-ink' : 'border-fg/[0.08] bg-surface'}`}
           initial={{ rotateX: 70, opacity: 0 }}
           animate={{ rotateX: 0, opacity: 1 }}
           transition={{ duration: 0.35, ease: 'easeOut' }}
@@ -69,7 +69,7 @@ export default function Unlock() {
 
       {stay.unlocked && booked && (
         <motion.section
-          className="overflow-hidden rounded-card border border-dashed border-ink/30 bg-white"
+          className="overflow-hidden rounded-card border border-dashed border-fg/30 bg-surface"
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.25 }}
